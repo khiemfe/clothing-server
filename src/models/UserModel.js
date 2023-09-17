@@ -8,11 +8,11 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema(
     {
         //   author: ObjectId,
-        name: { type: String, required: true },
+        name: { type: String },
         email: { type: String, required: true},
         password: { type: String, required: true},
         isAdmin: { type: Boolean, default: false},
-        phone: { type: Number, required: true},
+        phone: { type: Number },
         access_token: { type: String},
         refresh_token: { type: String},
         // slug: { type: String, slug: 'name', unique: true },

@@ -2,11 +2,14 @@ const express = require('express')
 const mongoose = require('mongoose');
 const routes = require('./routes')
 const bodyParser = require('body-parser')
+const cors = require('cors') // bảo mật và tránh lỗi khi dùng các gmail giống nhau
 
 require('dotenv').config() // có cái này mới lấy được thằng bên env
 
 const app = express()
 const port = process.env.PORT || 3001
+
+app.use(cors())
 app.use(bodyParser.json())
 
 // app.get('/', (req, res) => {

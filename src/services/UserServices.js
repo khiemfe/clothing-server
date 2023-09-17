@@ -11,25 +11,28 @@ const { genneralAccessToken, genneralRefreshToken } = require('./JwtService');
             })
             if(checkUser !== null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: 'The email is already'
                 })
             }
-            const hash = bcrypt.hashSync(password.toString(), 10);
-            const createUser = await User.create({
-                name,
-                email,
-                password: hash,
-                confirmPassword,
-                phone
-            })
-            if(createUser) {
-                resolve({
-                    status: "OK",
-                    message: 'SUCCESS',
-                    data: createUser
+            else {
+                const hash = bcrypt.hashSync(password.toString(), 10);
+                const createUser = await User.create({
+                    name,
+                    email,
+                    password: hash,
+                    confirmPassword,
+                    phone
                 })
+                if(createUser) {
+                    resolve({
+                        status: "OK",
+                        message: 'SUCCESS',
+                        data: createUser
+                    })
+                }
             }
+            
         } catch(e) {
             reject(e)
         }
@@ -45,18 +48,18 @@ const loginUser = (userLogin) => {
              })
              if(checkUser === null) {
                  resolve({
-                     status: "OK",
+                     status: "ERR",
                      message: 'The user is not defined'
                  })
              }
-             console.log(typeof password.toString())
-             console.log(typeof checkUser.password)
-            console.log(password.toString() === checkUser.password)
+            //  console.log(typeof password.toString())
+            //  console.log(typeof checkUser.password)
+            // console.log(password.toString() === checkUser.password)
             const comparePassword = bcrypt.compare(password.toString(), checkUser.password);
-            console.log(comparePassword)
+            // console.log(comparePassword)
             if(!comparePassword) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: 'The password or user in incorrect'
                 })
             }
