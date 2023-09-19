@@ -15,6 +15,8 @@ const productSchema = new Schema(
         countInStock: { type: Number, required: true},
         rating: { type: Number, required: true},
         description: { type: String},
+        discount: { type: Number},
+        selled: { type: Number},
         // slug: { type: String, slug: 'name', unique: true },
     },
     {

@@ -11,7 +11,7 @@ const Product = require('../models/ProductModel')
             })
             if(checkProduct !== null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: 'The name of product is already'
                 })
             }
@@ -35,7 +35,7 @@ const Product = require('../models/ProductModel')
             }
         } catch(e) {
             resolve({
-                status: "ERROR",
+                status: "ERR",
             })
             reject(e)
         }
@@ -51,7 +51,7 @@ const updateProduct = (id, data) => {
             //  console.log('checkProduct', checkProduct)
              if(checkProduct === null) {
                  resolve({
-                     status: "OK",
+                     status: "ERR",
                      message: 'The product is not defined'
                  })
              }
@@ -77,7 +77,7 @@ const getDetailsProduct = (id) => {
             })
             if(product === null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: 'The product is not defined'
                 })
             }
@@ -100,7 +100,7 @@ const deleteProduct = (id) => {
              })
              if(checkProduct === null) {
                  resolve({
-                     status: "OK",
+                     status: "ERR",
                      message: 'The user is not defined'
                  })
              }

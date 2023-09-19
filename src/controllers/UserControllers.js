@@ -49,19 +49,34 @@ const loginUser = async (req, res) => {
                 message: 'The input is email'
             })
         } 
-        // else if(password != confirmPassword) {
-        //     return res.status(200).json({
-        //         status: 'ERR',
-        //         message: 'The password is equal confirmPassword'
-        //     })
-        // }
         
         const response = await UserServices.loginUser(req.body)
-        return res.status(200).json(response)
+        console.log('rrrresponse', response)
+        const {refresh_token, ...newRespone} = response
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true, //chỉ lấy được cookie bằng http thôi, ko lấy được bằng js
+            secure: false, // bảo mật phía client 
+            samSite: 'strict'
+        })
 
+        return res.status(200).json(newRespone)
     } catch(e) {
         return res.status(404).json({
             message: e
+        })
+    }
+}
+
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('refresh_token')
+        return res.status(200).json({
+            status: 'OK',
+            message: 'Logout SUCCESS'
+        })
+    } catch(e) {
+        return res.status(404).json({
+            message: 'err logout'
         })
     }
 }
@@ -145,8 +160,11 @@ const getDetailsUser = async (req, res) => {
 }
 
 const refreshToken = async (req, res) => {
+    console.log(1111111111111112222222222)
+    console.log('req.cookies.refresh_token', req.cookies.refresh_token)
     try {
-        const token = req.headers.token.split(' ')[1]
+        const token = req.cookies.refresh_token
+        // let token = req.headers.token.split(' ')[1]
         if(!token) {
             return res.status(200).json({
                 status: 'ERR',
@@ -157,7 +175,7 @@ const refreshToken = async (req, res) => {
         return res.status(200).json(response)
     } catch(e) {
         return res.status(404).json({
-            message: "ERR"
+            message: 'errrrrr'
         })
     }
 }
@@ -169,5 +187,6 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailsUser,
-    refreshToken
+    refreshToken,
+    logoutUser
 }

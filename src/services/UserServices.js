@@ -41,7 +41,7 @@ const { genneralAccessToken, genneralRefreshToken } = require('./JwtService');
 
 const loginUser = (userLogin) => {
     return new Promise( async (resolve, reject) => {
-         const { name, email, password, confirmPassword, phone } = userLogin
+         const { email, password } = userLogin
          try {
              const checkUser = await User.findOne({
                  email: email
@@ -68,12 +68,18 @@ const loginUser = (userLogin) => {
                 id: checkUser.id,
                 isAdmin: checkUser.isAdmin
             })
-            // console.log(access_token)
 
+            console.log('++++++++', access_token)
+
+            // console.log(access_token)
+            console.log(checkUser.id)
+            console.log(checkUser.isAdmin)
             const refresh_token = await genneralRefreshToken({
                 id: checkUser.id,
                 isAdmin: checkUser.isAdmin
             })
+
+            console.log('=========', refresh_token)
 
             resolve({
                 status: "OK",
@@ -97,7 +103,7 @@ const updateUser = (id, data) => {
             //  console.log('checkUser', checkUser)
              if(checkUser === null) {
                  resolve({
-                     status: "OK",
+                     status: "ERR",
                      message: 'The user is not defined'
                  })
              }
@@ -125,7 +131,7 @@ const deleteUser = (id) => {
             //  console.log('checkUser', checkUser)
              if(checkUser === null) {
                  resolve({
-                     status: "OK",
+                     status: "ERR",
                      message: 'The user is not defined'
                  })
              }
@@ -166,7 +172,7 @@ const getDetailsUser = (id) => {
             })
             if(user === null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: 'The user is not defined'
                 })
             }
