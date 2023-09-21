@@ -17,6 +17,8 @@ const productSchema = new Schema(
         description: { type: String},
         discount: { type: Number},
         selled: { type: Number},
+        age: { type: String, required: true},
+        bmi: { type: String, required: true},
         // slug: { type: String, slug: 'name', unique: true },
     },
     {
