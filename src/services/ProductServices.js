@@ -21,9 +21,9 @@ const Product = require('../models/ProductModel')
                     image, 
                     type, 
                     price, 
-                    countInStock, 
-                    rating, 
-                    description
+                    // countInStock, 
+                    // rating, 
+                    // description
                 })
                 if(createProduct) {
                     resolve({
@@ -35,7 +35,7 @@ const Product = require('../models/ProductModel')
             }
         } catch(e) {
             resolve({
-                status: "ERR",
+                status: "ERROR service",
             })
             reject(e)
         }
