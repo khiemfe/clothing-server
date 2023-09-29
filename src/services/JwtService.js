@@ -23,6 +23,14 @@ const refreshTokenJwtService = (token) => {
     return new Promise((resolve, reject) => {
         try {
            console.log('///////////',token)
+        //    const fs = require('fs')
+        //     const base64ToImage = require('base64-to-image')
+
+            // fs.readFile('../Clothing_Store/src/components/base64.txt', (err, data) => {
+            //     const base64Data = data.toString()
+            //     // console.log(base64Data)
+            //     base64ToImage(base64Data, 'my_images/')
+            // })
            jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
                 if(err) {
                     resolve({
