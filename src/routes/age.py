@@ -25,8 +25,7 @@ def yolo(img_path):
   # print('iiiiiiiiiiiiiiiii', str(results))
   # print('uuuuuuuuuuuuuuuu',str(str(results.pandas().xyxy).split(" ")[-1]).split("]")[0])
   label = str(str(results.pandas().xyxy).split(" ")[-1]).split("]")[0]
-  # age = []
-  # age.append(label)
+
   # print(results.pandas().xyxy[0])
   # print(label)
   return label
