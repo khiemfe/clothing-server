@@ -1,6 +1,6 @@
 const User = require('../models/UserModel')
-const bcrypt = require('bcrypt');
-const { genneralAccessToken, genneralRefreshToken } = require('./JwtService');
+const bcrypt = require('bcrypt')
+const { genneralAccessToken, genneralRefreshToken } = require('./JwtService')
 
  const createUser = (newUser) => {
    return new Promise( async (resolve, reject) => {
@@ -16,7 +16,7 @@ const { genneralAccessToken, genneralRefreshToken } = require('./JwtService');
                 })
             }
             else {
-                const hash = bcrypt.hashSync(password.toString(), 10);
+                const hash = bcrypt.hashSync(password.toString(), 10)
                 const createUser = await User.create({
                     name,
                     email,
@@ -55,7 +55,7 @@ const loginUser = (userLogin) => {
             //  console.log(typeof password.toString())
             //  console.log(typeof checkUser.password)
             // console.log(password.toString() === checkUser.password)
-            const comparePassword = bcrypt.compare(password.toString(), checkUser.password);
+            const comparePassword = bcrypt.compare(password.toString(), checkUser.password)
             // console.log(comparePassword)
             if(!comparePassword) {
                 resolve({

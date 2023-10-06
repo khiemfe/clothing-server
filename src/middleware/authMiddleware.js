@@ -47,7 +47,7 @@ const authUserMiddleware = (req, res, next) => {
                 status: 'ERROR 3'
             })
         }
-    });
+    })
 }
 
 module.exports = {
