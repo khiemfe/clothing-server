@@ -37,7 +37,7 @@ const Product = require('../models/ProductModel')
             }
         } catch(e) {
             resolve({
-                status: "ERROR service",
+                status: "ERROR SERVICE",
             })
             reject(e)
         }
