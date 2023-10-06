@@ -103,7 +103,7 @@ const deleteProduct = (id) => {
              if(checkProduct === null) {
                  resolve({
                      status: "ERR",
-                     message: 'The USER is not defined'
+                     message: 'The user is not defined'
                  })
              }
             await Product.findByIdAndDelete(id)
