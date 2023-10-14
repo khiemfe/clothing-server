@@ -16,24 +16,21 @@ app.use(cookieParser())
 app.use(express.json({limit: '50mb'}))
 app.use(express.urlencoded({limit: '50mb'}))
 
-// app.get('/', (req, res) => {
-//     res.send('Hello')
-// })
-
 routes(app)
 
 async function connect() {
     try {
-        await mongoose.connect(`${process.env.MONGO_DB}`);
-        console.log('Connect successfully!');
+        await mongoose.connect(`${process.env.MONGO_DB}`)
+        console.log('Connect successfully!')
     } catch (error) {
-        console.log('Connect failure!');
+        console.log('Connect failure!')
     }
 }
+
 connect()
 
-// module.exports = { connect };
+// module.exports = { connect }
 
 app.listen(port, () => {
-    console.log(`App listening at http://localhost:${port}`);
-});
+    console.log(`App listening at http://localhost:${port}`)
+})

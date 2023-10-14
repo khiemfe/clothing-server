@@ -16,11 +16,11 @@ let {PythonShell} = require('python-shell')
 
 const imagee = 'src/routes/img.jpeg'
 let options = {
-    pythonPath: 'python',
+    pythonPath: 'python3',
     args:[imagee]
 }
 const promise = new Promise((resolve, reject) => {
-    PythonShell.run("age.py", options, function(err, results) {
+    PythonShell.run("check.py", options, function(err, results) {
       if (err) {
         reject(err);
       } else {

@@ -1,3 +1,4 @@
+
 const express = require('express')
 const router = express.Router()
 const ProductControllers = require('../controllers/ProductControllers')
@@ -8,6 +9,7 @@ router.put('/update/:id', authMiddleware, ProductControllers.updateProduct)
 router.get('/get-details/:id', ProductControllers.getdetailsProduct)
 router.delete('/delete/:id', authMiddleware, ProductControllers.deleteProduct)
 router.get('/get-all', ProductControllers.getAllProduct)
+router.post('/delete-many', authMiddleware, ProductControllers.deleteManyProduct)
 
 module.exports = router
 

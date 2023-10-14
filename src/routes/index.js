@@ -7,6 +7,7 @@ let { PythonShell } = require('python-shell')
 const routes = (app) => {
     app.use('/api/user', UserRouter)
     app.use('/api/product', ProductRouter)
+    
     const arr = ['']
     app.post("/save", (req, res) => {
         // Nhận dữ liệu từ ReactJS
@@ -49,7 +50,7 @@ const routes = (app) => {
                 if (err) {
                     console.log(err)
                 } else {
-                    console.log(results[0])
+                    console.log(results)
                     fs.writeFile('../Clothing_Store/src/components/age.txt', 
                         results[0], function(err) {
                         if (err) {
@@ -65,7 +66,7 @@ const routes = (app) => {
                 if (err) {
                     console.log(err)
                 } else {
-                    console.log(results[0])
+                    console.log(results)
                     fs.writeFile('../Clothing_Store/src/components/gender.txt', 
                         results[0], function(err) {
                         if (err) {
@@ -81,23 +82,25 @@ const routes = (app) => {
                 if (err) {
                     console.log(err)
                 } else {
-                    console.log(results[0])
-                    fs.writeFile('../Clothing_Store/src/components/bmi.txt', 
+                    console.log(results)
+                    if(results) {
+                        fs.writeFile('../Clothing_Store/src/components/bmi.txt', 
                         results[0], function(err) {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            console.log('File written bmi successfully!')
-                            fs.writeFile('../Clothing_Store/src/components/isLoading.txt', 
-                                'false', function(err) {
-                                if (err) {
-                                    console.log(err)
-                                } else {
-                                    console.log('File written false successfully!')
-                                }
-                            })
-                        }
-                    })
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log('File written bmi successfully!')
+                                fs.writeFile('../Clothing_Store/src/components/isLoading.txt', 
+                                    'false', function(err) {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log('File written false successfully!')
+                                    }
+                                })
+                            }
+                        })
+                    }
                 }
             })
             
@@ -178,7 +181,7 @@ const routes = (app) => {
     //   .catch((err) => {
     //       console.log(err)
     //   })
-  })
+    })
 }
 
 module.exports = routes

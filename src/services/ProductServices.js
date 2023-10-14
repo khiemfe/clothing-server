@@ -2,7 +2,7 @@ const Product = require('../models/ProductModel')
 // const bcrypt = require('bcrypt');
 // const { genneralAccessToken, genneralRefreshToken } = require('./JwtService');
 
- const createProduct = (newProduct) => {
+const createProduct = (newProduct) => {
    return new Promise( async (resolve, reject) => {
         const { name, image, type, price, countInStock, rating, description, age, bmi } = newProduct
         try {
@@ -117,11 +117,25 @@ const deleteProduct = (id) => {
     })
 }
 
+const deleteManyProduct = (ids) => {
+    console.log('ids',ids)
+    return new Promise( async (resolve, reject) => {
+         try {
+            await Product.deleteMany({_id: ids})
+            resolve({
+                status: "OK",
+                message: 'DELETE MANY PRODUCT SUCCESS',
+            })
+         } catch(e) {
+             console.log('loi', e)
+         }
+    })
+}
+
 const getAllProduct = (limit, page, sort, filter) => {
     return new Promise( async (resolve, reject) => {
          try {
             const totalProduct = await Product.count()
-
             if(filter && filter.length == 2) {
                 const label = filter[0]
                 const allProductFilter = await Product.find({
@@ -136,7 +150,6 @@ const getAllProduct = (limit, page, sort, filter) => {
                     totalPage: Math.ceil(totalProduct / limit)
                 })
             }
-
             if(sort && sort.length == 2) {
                 const objectSort = {}
                 objectSort[sort[1]] = sort[0]
@@ -150,7 +163,6 @@ const getAllProduct = (limit, page, sort, filter) => {
                     totalPage: Math.ceil(totalProduct / limit)
                 })
             }
-
             const allProduct = await Product.find().limit(limit).skip(page * limit)
             resolve({
                 status: "OK",
@@ -160,7 +172,6 @@ const getAllProduct = (limit, page, sort, filter) => {
                 pageCurrent: page + 1,
                 totalPage: Math.ceil(totalProduct / limit)
             })
-            
          } catch(e) {
              reject(e)
          }
@@ -172,5 +183,6 @@ module.exports = {
     updateProduct,
     getDetailsProduct,
     deleteProduct,
-    getAllProduct
+    getAllProduct,
+    deleteManyProduct
 }

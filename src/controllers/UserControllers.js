@@ -16,16 +16,14 @@ const createUser = async (req, res) => {
                 status: 'ERR',
                 message: 'The input is email'
             })
-        } else if(password != confirmPassword) {
+        } else if(password !== confirmPassword) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The password is equal confirmPassword'
             })
         }
-        
         const response = await UserServices.createUser(req.body)
         return res.status(200).json(response)
-
     } catch(e) {
         return res.status(404).json({
             message: e
@@ -48,18 +46,17 @@ const loginUser = async (req, res) => {
                 status: 'ERR',
                 message: 'The input is email'
             })
-        } 
-        
+        }
         const response = await UserServices.loginUser(req.body)
         console.log('rrrresponse', response)
         const {refresh_token, ...newRespone} = response
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true, //chỉ lấy được cookie bằng http thôi, ko lấy được bằng js
             secure: false, // bảo mật phía client 
-            samSite: 'strict'
+            samSite: 'strict',
+            path: '/'
         })
-
-        return res.status(200).json(newRespone)
+        return res.status(200).json({...newRespone, refresh_token})
     } catch(e) {
         return res.status(404).json({
             message: e
@@ -129,6 +126,25 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const deleteManyUser = async (req, res) => {
+    try {
+        const ids = req.body.ids
+        if(!ids) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The ids is required'
+            })
+        }
+        const response = await UserServices.deleteManyUser(ids)
+        return res.status(200).json(response)
+
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
 const getAllUser = async (req, res) => {
     try {
         const response = await UserServices.getAllUser()
@@ -188,5 +204,6 @@ module.exports = {
     getAllUser,
     getDetailsUser,
     refreshToken,
-    logoutUser
+    logoutUser,
+    deleteManyUser
 }

@@ -11,6 +11,7 @@ router.delete('/delete-user/:id', authMiddleware, UserControllers.deleteUser)
 router.get('/get-all', authMiddleware, UserControllers.getAllUser)
 router.get('/get-details/:id', authUserMiddleware, UserControllers.getDetailsUser)
 router.post('/refresh-token', UserControllers.refreshToken) //access_token mới thay thế khi nó hết hạn
+router.post('/delete-many', authMiddleware, UserControllers.deleteManyUser)
 
 module.exports = router
 

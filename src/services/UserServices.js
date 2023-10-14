@@ -32,7 +32,6 @@ const { genneralAccessToken, genneralRefreshToken } = require('./JwtService')
                     })
                 }
             }
-            
         } catch(e) {
             reject(e)
         }
@@ -55,8 +54,8 @@ const loginUser = (userLogin) => {
             //  console.log(typeof password.toString())
             //  console.log(typeof checkUser.password)
             // console.log(password.toString() === checkUser.password)
-            const comparePassword = bcrypt.compare(password.toString(), checkUser.password)
-            // console.log(comparePassword)
+            const comparePassword = bcrypt.compareSync(password, checkUser.password)
+            console.log('pass', comparePassword)
             if(!comparePassword) {
                 resolve({
                     status: "ERR",
@@ -148,6 +147,20 @@ const deleteUser = (id) => {
     })
 }
 
+const deleteManyUser = (ids) => {
+    return new Promise( async (resolve, reject) => {
+         try {
+            await User.deleteMany({_id: ids})
+            resolve({
+                status: "OK",
+                message: 'DELETE MANY USER SUCCESS',
+            })
+         } catch(e) {
+             reject(e)
+         }
+    })
+}
+
 const getAllUser = () => {
     return new Promise( async (resolve, reject) => {
          try {
@@ -194,4 +207,5 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailsUser,
+    deleteManyUser
 }

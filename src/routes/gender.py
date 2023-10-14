@@ -2,7 +2,7 @@ import cv2
 import sys
 import torch
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='Model_Gender.pt')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='Model_GenderNew.pt')
 
 def yolo(img_path):
   img=cv2.imread(img_path)
