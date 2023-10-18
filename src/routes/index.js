@@ -8,7 +8,7 @@ const routes = (app) => {
   app.use("/api/user", UserRouter);
   app.use("/api/product", ProductRouter);
 
-  const arr = [""];
+  // const arr = [""];
   app.post("/save", (req, res) => {
     // Nhận dữ liệu từ ReactJS
     const text = req.body.imageBase64;
