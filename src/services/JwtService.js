@@ -1,6 +1,19 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const genneralAccessTokenAdmin = async (payload) => {
+  // console.log('pay', payload)
+  const access_token = jwt.sign(
+    {
+      ...payload,
+    },
+    process.env.ACCESS_TOKEN,
+    { expiresIn: "1s" }
+  );
+
+  return access_token;
+};
+
 const genneralAccessToken = async (payload) => {
   // console.log('pay', payload)
   const access_token = jwt.sign(
@@ -8,7 +21,7 @@ const genneralAccessToken = async (payload) => {
       ...payload,
     },
     process.env.ACCESS_TOKEN,
-    { expiresIn: "7d" }
+    { expiresIn: "30s" }
   );
 
   return access_token;
@@ -57,6 +70,7 @@ const refreshTokenJwtService = (token) => {
 };
 
 module.exports = {
+  genneralAccessTokenAdmin,
   genneralAccessToken,
   genneralRefreshToken,
   refreshTokenJwtService,

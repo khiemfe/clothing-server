@@ -4,7 +4,7 @@ const router = express.Router()
 const ProductControllers = require('../controllers/ProductControllers')
 const { authMiddleware, authUserMiddleware } = require('../middleware/authMiddleware')
 
-router.post('/create', ProductControllers.createProduct)
+router.post('/create', authMiddleware, ProductControllers.createProduct)
 router.put('/update/:id', authMiddleware, ProductControllers.updateProduct)
 router.get('/get-details/:id', ProductControllers.getdetailsProduct)
 router.delete('/delete/:id', authMiddleware, ProductControllers.deleteProduct)

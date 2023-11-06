@@ -3,9 +3,8 @@ require("dotenv").config();
 
 //chỉ admin mới đc làm gì đó (xóa user...)
 const authMiddleware = (req, res, next) => {
-  // console.log('checkToken', req.headers.token)
   const token = req.headers.token.split(" ")[1];
-  // console.log(token)
+  console.log("------1token1-----", token);
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     //nếu isAdmin true thì có thể xóa, còn false thì sẽ vào err
     if (err) {
@@ -28,10 +27,9 @@ const authMiddleware = (req, res, next) => {
 const authUserMiddleware = (req, res, next) => {
   // console.log('checkToken', req.headers.token)
   const token = req.headers.token.split(" ")[1];
-  console.log("------token-----", token);
+  console.log("------2token2-----", token);
   const userId = req.params.id;
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
-    //nếu isAdmin true thì có thể xóa, còn false thì sẽ vào err
     if (err) {
       //nếu nó chưa đăng nhập
       return res.status(200).json({

@@ -53,7 +53,8 @@ const loginUser = async (req, res) => {
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true, //chỉ lấy được cookie bằng http thôi, ko lấy được bằng js
       secure: false, // bảo mật phía client
-      samSite: "strict",
+      sameSite: "strict",
+      maxAge: 31536000,
       path: "/",
     });
     return res.status(200).json({ ...newRespone, refresh_token });
@@ -93,7 +94,7 @@ const updateUser = async (req, res) => {
     console.log("userId:", userId);
     console.log("data:", data);
     const response = await UserServices.updateUser(userId, data);
-    
+
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -163,6 +164,7 @@ const getDetailsUser = async (req, res) => {
         message: "The userId is required",
       });
     }
+    console.log('userIddd', userId)
     const response = await UserServices.getDetailsUser(userId);
     return res.status(200).json(response);
   } catch (e) {
@@ -173,11 +175,9 @@ const getDetailsUser = async (req, res) => {
 };
 
 const refreshToken = async (req, res) => {
-  console.log(1111111111111112222222222);
   console.log("req.cookies.refresh_token", req.cookies.refresh_token);
   try {
     const token = req.cookies.refresh_token;
-    // let token = req.headers.token.split(' ')[1]
     if (!token) {
       return res.status(200).json({
         status: "ERR",

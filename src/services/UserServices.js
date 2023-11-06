@@ -1,6 +1,10 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
-const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
+const {
+  genneralAccessTokenAdmin,
+  genneralAccessToken,
+  genneralRefreshToken,
+} = require("./JwtService");
 
 const createUser = (newUser) => {
   return new Promise(async (resolve, reject) => {
@@ -62,10 +66,19 @@ const loginUser = (userLogin) => {
         });
       }
 
-      const access_token = await genneralAccessToken({
-        id: checkUser.id,
-        isAdmin: checkUser.isAdmin,
-      });
+      console.log("checkUser.isAdmin", checkUser.isAdmin);
+      let access_token
+      if (checkUser.isAdmin) {
+        access_token = await genneralAccessTokenAdmin({
+          id: checkUser.id,
+          isAdmin: checkUser.isAdmin,
+        });
+      } else {
+        access_token = await genneralAccessToken({
+          id: checkUser.id,
+          isAdmin: checkUser.isAdmin,
+        });
+      }
 
       console.log("++++++++", access_token);
 
@@ -92,6 +105,7 @@ const loginUser = (userLogin) => {
 };
 
 const updateUser = (id, data) => {
+  console.log('iddddd', id)
   return new Promise(async (resolve, reject) => {
     try {
       const checkUser = await User.findOne({
@@ -104,7 +118,6 @@ const updateUser = (id, data) => {
           message: "The user is not defined",
         });
       }
-
       const updateUser = await User.findByIdAndUpdate(id, data, { new: true });
       // console.log('updateUser', updateUser)
 
@@ -176,6 +189,7 @@ const getAllUser = () => {
 };
 
 const getDetailsUser = (id) => {
+  console.log('id id', id)
   return new Promise(async (resolve, reject) => {
     try {
       const user = await User.findOne({
