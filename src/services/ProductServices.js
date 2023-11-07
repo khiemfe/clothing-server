@@ -220,7 +220,7 @@ const getAllProduct = (limit, page, sort, filter) => {
           pageCurrent: page + 1,
           totalPage: Math.ceil(totalProduct / 2 / limit),
         });
-      }
+      } 
       if (sort && sort.length == 2) {
         const objectSort = {};
         objectSort[sort[1]] = sort[0];
