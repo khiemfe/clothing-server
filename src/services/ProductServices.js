@@ -133,6 +133,7 @@ const getAllProduct = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
       let totalProduct;
+      const totalProductLimit = await Product.count()
       let allProductFilter;
       let allProductFilter1 = [];
       let allProductFilter2 = [];
@@ -215,10 +216,10 @@ const getAllProduct = (limit, page, sort, filter) => {
           status: "OK",
           message: "SUCCESS",
           data: allProductFilter,
-          totalProduct: totalProduct / 2,
+          totalProduct: totalProduct,
           noProduct: noProduct || false,
           pageCurrent: page + 1,
-          totalPage: Math.ceil(totalProduct / 2 / limit),
+          totalPage: Math.ceil(totalProduct / limit),
         });
       } 
       if (sort && sort.length == 2) {
@@ -232,9 +233,9 @@ const getAllProduct = (limit, page, sort, filter) => {
           status: "OK",
           message: "SUCCESS",
           data: allProductSort,
-          totalProduct: totalProduct,
+          totalProduct: totalProductLimit,
           pageCurrent: page + 1,
-          totalPage: Math.ceil(totalProduct / limit),
+          totalPage: Math.ceil(totalProductLimit / limit),
         });
       }
 
@@ -245,9 +246,9 @@ const getAllProduct = (limit, page, sort, filter) => {
         status: "OK",
         message: "SUCCESS",
         data: allProduct,
-        totalProduct: totalProduct,
+        totalProduct: totalProductLimit,
         pageCurrent: page + 1,
-        totalPage: Math.ceil(totalProduct / limit),
+        totalPage: Math.ceil(totalProductLimit / limit),
       });
     } catch (e) {
       reject(e);
