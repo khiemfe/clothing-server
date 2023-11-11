@@ -3,9 +3,9 @@ const JwtService = require('../services/JwtService')
 
 const createProduct = async (req, res) => {
     try {
-        const { name, image, type, price, age, bmi } = req.body
+        const { name, image, gender, price, age, size } = req.body
         console.log('ppppppppppppppppp',req.body)
-        if(!name || !image || !type || !price || !age || !bmi) {
+        if(!name || !image || !gender || !price || !age || !size) {
             return res.status(404).json({
                 status: 'ERR',
                 message: 'The input is requireddd'
@@ -110,11 +110,25 @@ const getAllProduct = async (req, res) => {
     }
 }
 
+const getAllType = async (req, res) => {
+    try {
+        const { limit, page, sort, filter } = req.query
+        const response = await ProductServices.getAllType()
+        return res.status(200).json(response)
+
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
 module.exports = {
     createProduct,
     updateProduct,
     getdetailsProduct,
     deleteProduct,
     getAllProduct,
-    deleteManyProduct
+    deleteManyProduct,
+    getAllType
 }

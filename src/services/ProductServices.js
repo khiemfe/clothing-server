@@ -4,7 +4,7 @@ const Product = require("../models/ProductModel");
 
 const createProduct = (newProduct) => {
   return new Promise(async (resolve, reject) => {
-    const { name, image, type, price, age, bmi } = newProduct;
+    const { name, image, gender, price, age, size } = newProduct;
     try {
       const checkProduct = await Product.findOne({
         name: name,
@@ -18,10 +18,10 @@ const createProduct = (newProduct) => {
         const createProduct = await Product.create({
           name,
           image,
-          type,
+          gender,
           price,
           age,
-          bmi,
+          size,
         });
         if (createProduct) {
           resolve({
@@ -133,12 +133,13 @@ const getAllProduct = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
       let totalProduct;
-      const totalProductLimit = await Product.count()
+      const totalProductLimit = await Product.count();
       let allProductFilter;
       let allProductFilter1 = [];
       let allProductFilter2 = [];
       let allProductFilter3 = [];
       let allProductFilter4 = [];
+      //   let allProductFilter5 = [];
       let noProduct;
       if (filter && filter.length == 2) {
         const label = filter[0];
@@ -154,20 +155,18 @@ const getAllProduct = (limit, page, sort, filter) => {
         for (let i = 0; i < allProductFilter1.length; i++) {
           allProductFilter4.push(allProductFilter1[i]);
         }
-        totalProduct += await Product.count({
-          [label]: { $regex: filter[1], $options: "i" },
-        });
+        // totalProduct += await Product.count({
+        //   [label]: { $regex: filter[1], $options: "i" },
+        // });
         allProductFilter2 = await Product.find({
-          [label]: { $regex: filter[1].split(" ")[0], $options: "i" },
+          [label]: { $regex: filter[1]?.split(" ")[0], $options: "i" },
         })
           .limit(limit)
           .skip(page * limit);
 
         for (let i = 0; i < allProductFilter2.length; i++) {
-          const check = allProductFilter2[i]?.name.includes(
-            filter[1].split(" ")[1]
-          );
-          console.log("check", check);
+          const check = allProductFilter2[i]?.name.includes(filter[1]?.split(" ")[1]);
+          //   console.log("check", check);
           if (check) {
             allProductFilter4.push(allProductFilter2[i]);
             allProductFilter2.splice(i, 1);
@@ -175,9 +174,10 @@ const getAllProduct = (limit, page, sort, filter) => {
             noProduct = `Không có sản phẩm nào cho từ khoá: ${filter[1]}`;
           }
         }
-        for (let i = 0; i < allProductFilter2.length; i++) {
-          allProductFilter4.push(allProductFilter2[i]);
-        }
+
+        // for (let i = 0; i < allProductFilter2.length; i++) {
+        //   allProductFilter4.push(allProductFilter2[i]);
+        // }
 
         // if (filter[1]?.split(" ")[1]) {
         //   allProductFilter3 = await Product.find({
@@ -208,20 +208,58 @@ const getAllProduct = (limit, page, sort, filter) => {
               allProductFilter.splice(j, 1);
             }
           }
+          for (let j = 0; j < allProductFilter2.length; j++) {
+            if (allProductFilter[i]?.id === allProductFilter2[j]?.id) {
+              allProductFilter2.splice(j, 1);
+            }
+          }
         }
-        for (let i = 0; i < allProductFilter.length; i++) {
-          console.log("allProductFilter", allProductFilter[i]?.name);
-        }
+
         resolve({
           status: "OK",
           message: "SUCCESS",
           data: allProductFilter,
+          data2: allProductFilter2,
           totalProduct: totalProduct,
           noProduct: noProduct || false,
           pageCurrent: page + 1,
           totalPage: Math.ceil(totalProduct / limit),
         });
-      } 
+      }
+
+    //   -----
+
+    let allProductFilterPropose
+
+    if (filter && filter.length == 6) {
+        const label1 = filter[0];
+        const label2 = filter[2];
+        const label3 = filter[4];
+        console.log("limit", limit);
+        totalProduct = await Product.count({
+          [label1]: { $regex: filter[1], $options: "i" },
+        });
+        allProductFilterPropose = await Product.find({
+        //   [label1]: { $regex: filter[1], $options: "i" },
+          [label2]: { $regex: filter[3], $options: "i" },
+        //   [label3]: { $regex: filter[5], $options: "i" },
+        })
+        //   .limit(limit)
+          .skip(page * limit);
+        
+
+        resolve({
+          status: "OK",
+          message: "SUCCESS",
+          data: allProductFilterPropose,
+          totalProduct: totalProduct,
+          noProduct: noProduct || false,
+          pageCurrent: page + 1,
+          totalPage: Math.ceil(totalProduct / limit),
+        });
+      }
+
+      
       if (sort && sort.length == 2) {
         const objectSort = {};
         objectSort[sort[1]] = sort[0];
@@ -256,6 +294,21 @@ const getAllProduct = (limit, page, sort, filter) => {
   });
 };
 
+const getAllType = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const allType = await Product.distinct('type');
+        resolve({
+          status: "OK",
+          message: "DELETE MANY PRODUCT SUCCESS",
+          data: allType
+        });
+      } catch (e) {
+        console.log("loi All type", e);
+      }
+    });
+  };
+
 module.exports = {
   createProduct,
   updateProduct,
@@ -263,4 +316,5 @@ module.exports = {
   deleteProduct,
   getAllProduct,
   deleteManyProduct,
+  getAllType
 };

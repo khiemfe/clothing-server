@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ProductControllers = require("../controllers/ProductControllers");
-const {
-  authMiddleware,
-  authUserMiddleware,
-} = require("../middleware/authMiddleware");
+const { authMiddleware } = require("../middleware/authMiddleware");
 
 router.post("/create", authMiddleware, ProductControllers.createProduct);
 router.put("/update/:id", authMiddleware, ProductControllers.updateProduct);
@@ -16,5 +13,6 @@ router.post(
   authMiddleware,
   ProductControllers.deleteManyProduct
 );
+router.get("/get-all-type", ProductControllers.getAllType);
 
 module.exports = router;

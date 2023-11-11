@@ -8,7 +8,7 @@ const genneralAccessTokenAdmin = async (payload) => {
       ...payload,
     },
     process.env.ACCESS_TOKEN,
-    { expiresIn: "1s" }
+    { expiresIn: "30s" }
   );
 
   return access_token;
@@ -21,7 +21,7 @@ const genneralAccessToken = async (payload) => {
       ...payload,
     },
     process.env.ACCESS_TOKEN,
-    { expiresIn: "30s" }
+    { expiresIn: "1d" }
   );
 
   return access_token;

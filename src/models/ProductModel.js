@@ -10,7 +10,8 @@ const productSchema = new Schema(
         //   author: ObjectId,
         name: { type: String, required: true },
         image: { type: String, required: true},
-        type: { type: String, required: true},
+        gender: { type: String, required: true},
+        type: { type: String},
         price: { type: Number, required: true},
         countInStock: { type: Number},
         rating: { type: Number},
@@ -18,7 +19,7 @@ const productSchema = new Schema(
         discount: { type: Number},
         selled: { type: Number},
         age: { type: String, required: true},
-        bmi: { type: String, required: true},
+        size: { type: String, required: true},
         // slug: { type: String, slug: 'name', unique: true },
     },
     {
