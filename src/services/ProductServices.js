@@ -134,17 +134,21 @@ const getAllProduct = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (filter && filter.length == 2) {
-        let allProductFilter;
-        let allProductFilter1 = [];
+        let allProductFilterMain;
+        // let allProductFilterSecond;
+        let allProductFilter = [];
+        // let allProductFilter1 = [];
         let allProductFilter2 = [];
-        //   let allProductFilter3 = [];
-        let allProductFilter4 = [];
+        let NameSearch = filter[1];
         let noProduct;
         let totalProductSearch;
-        let totalProductSearch2;
+        // let totalProductSearch2;
+        let arrAllProductFilter = [];
+        // let arrAllProductFilter2 = [];
 
         const label = filter[0];
         console.log("limit", limit);
+        console.log("NameSearch", NameSearch);
 
         // allProductFilter1 = await Product.find({
         //   [label]: { $regex: filter[1], $options: "i" },
@@ -154,56 +158,34 @@ const getAllProduct = (limit, page, sort, filter) => {
         // for (let i = 0; i < allProductFilter1.length; i++) {
         //   allProductFilter4.push(allProductFilter1[i]);
         // }
-        totalProductSearch2 = await Product.count({
-          [label]: { $regex: filter[1]?.split(" ")[0], $options: "i" },
-        });
 
         allProductFilter2 = await Product.find({
           [label]: { $regex: filter[1]?.split(" ")[0], $options: "i" },
-        })
-          .limit(limit)
-          .skip(page * limit);
+        });
 
-        if (filter[1].split(" ").length > 1) {
+        if (filter[1]?.split(" ").length > 1) {
           for (let i = 0; i < allProductFilter2.length; i++) {
-            const check = allProductFilter2[i]?.name
-              .toLowerCase()
-              .includes(filter[1]?.split(" ")[1].toLowerCase());
-            // console.log("check", check);
-            if (check) {
-              allProductFilter4.push(allProductFilter2[i]);
-              allProductFilter2.splice(i, 1);
-            } else {
-              noProduct = `Không có sản phẩm nào cho từ khoá: ${filter[1]}`;
+            if (
+              allProductFilter2[i]?.name
+                .toLowerCase()
+                .includes(filter[1]?.split(" ")[1].toLowerCase())
+            ) {
+              allProductFilter.push(allProductFilter2[i]);
             }
           }
+        } else {
+          for (let i = 0; i < allProductFilter2.length; i++) {
+            allProductFilter.push(allProductFilter2[i]);
+          }
         }
-        // if (allProductFilter4.length === 0) {
-        //   noProduct = `Không có sản phẩm nào cho từ khoá: ${filter[1]}`;
-        // }
-
-        // if (filter[1]?.split(" ")[1]) {
-        //   allProductFilter3 = await Product.find({
-        //     [label]: { $regex: filter[1]?.split(" ")[1], $options: "i" },
-        //   });
-        //   console.log("allProductFilter3", allProductFilter3);
-        //   for (let i = 0; i < allProductFilter3.length; i++) {
-        //     const check = allProductFilter3[i]?.name.includes(
-        //       filter[1].split(" ")[1]
-        //     );
-        //     console.log("check2", check);
-        //     if (check) {
-        //       allProductFilter4.push(allProductFilter3[i]);
-        //       allProductFilter3.splice(i, 1);
-        //     }
-        //   }
-        //   for (let i = 0; i < allProductFilter3.length; i++) {
-        //     console.log("allProductFilter3", allProductFilter3[i]?.name);
-        //     allProductFilter4.push(allProductFilter3[i]);
+        if (allProductFilter.length === 0) {
+          noProduct = `Không có sản phẩm nào cho từ khoá: ${filter[1]}`;
+        }
+        // else {
+        //   if (allProductFilter2.length === 0) {
+        //     noProduct = `Không có sản phẩm nào cho từ khoá: ${filter[1]}`;
         //   }
         // }
-
-        allProductFilter = allProductFilter4;
 
         for (let i = 0; i < allProductFilter.length; i++) {
           //   for (let j = i + 1; j < allProductFilter.length; j++) {
@@ -211,25 +193,53 @@ const getAllProduct = (limit, page, sort, filter) => {
           //       allProductFilter.splice(j, 1);
           //     }
           //   }
-          //   for (let j = 0; j < allProductFilter2.length; j++) {
-          //     if (allProductFilter[i]?.id === allProductFilter2[j]?.id) {
-          //       allProductFilter2.splice(j, 1);
-          //     }
-          //   }
-          console.log("allProductFilter", allProductFilter[i]?.name);
+          for (let j = 0; j < allProductFilter2.length; j++) {
+            if (allProductFilter[i]?.id === allProductFilter2[j]?.id) {
+              allProductFilter2.splice(j, 1);
+            }
+          }
+          arrAllProductFilter.push(allProductFilter[i]?.name);
         }
+
+        // for (let i = 0; i < allProductFilter2.length; i++) {
+        //   arrAllProductFilter2.push(allProductFilter2[i]?.name);
+        // }
+
+        console.log("arrAllProductFilter", arrAllProductFilter);
+        // console.log("arrAllProductFilter2", arrAllProductFilter2);
+
+        totalProductSearch = await Product.count({
+          [label]: { $in: arrAllProductFilter },
+        });
+
+        allProductFilterMain = await Product.find({
+          [label]: { $in: arrAllProductFilter },
+        })
+          .limit(limit)
+          .skip(page * limit);
+
+        // totalProductSearch2 = await Product.count({
+        //   [label]: { $in: arrAllProductFilter2 },
+        // });
+
+        // allProductFilterSecond = await Product.find({
+        //   [label]: { $in: arrAllProductFilter2 },
+        // })
+        //   .limit(limit)
+        //   .skip(page * limit);
 
         resolve({
           status: "OK",
           message: "SUCCESS",
-          data: allProductFilter,
-          data2: allProductFilter2,
+          data: allProductFilterMain,
+          //   data2: allProductFilterSecond,
           totalProduct: totalProductSearch,
-          totalProduct2: totalProductSearch2,
+          //   totalProduct2: totalProductSearch2,
+          NameSearch: NameSearch,
           noProduct: noProduct || false,
           pageCurrent: page + 1,
           totalPage: Math.ceil(totalProductSearch / limit),
-          totalPage2: Math.ceil(totalProductSearch2 / limit),
+          //   totalPage2: Math.ceil(totalProductSearch2 / limit),
         });
       }
 
@@ -246,16 +256,14 @@ const getAllProduct = (limit, page, sort, filter) => {
         let label5 = filter[3];
         let label6 = filter[5];
 
-        console.log("1", label4);
-        console.log("2", label6);
-        console.log("3", label5);
-
-        const ageStart = +label5.split("-")[0];
-        const ageEnd = +label5.split("-")[1];
+        const ageStart = +label5?.split("-")[0];
+        const ageEnd = +label5?.split("-")[1];
         console.log("ageStart", ageStart);
         console.log("ageEnd", ageEnd);
 
         const arrAge = [];
+        const arrGender = [];
+        const arrSize = [];
 
         if (filter[1] === "nu") {
           label4 = "nữ";
@@ -281,24 +289,24 @@ const getAllProduct = (limit, page, sort, filter) => {
           label6 = "";
         }
 
-        console.log("filter[1]", label4);
-        console.log("filter[5]", label6);
+        console.log("gender", label4);
         console.log("age", label5);
+        console.log("size", label6);
 
         let totalProductPropose;
-
+        console.log('label5.includes("-")', label5.includes("-"));
         if (label5.includes("-")) {
-          const gtAge = await Product.find({
+          const arrGenderSize = await Product.find({
             [label1]: { $regex: label4, $options: "i" },
             [label3]: { $regex: label6, $options: "i" },
-          })
-            .limit(limit)
-            .skip(page * limit);
+          });
 
           console.log("limit", limit);
-          for (let i = 0; i < gtAge.length; i++) {
-            const ageProductStart = +gtAge[i]?.age?.split("-")[0];
-            const ageProductEnd = +gtAge[i]?.age?.split("-")[1];
+          for (let i = 0; i < arrGenderSize.length; i++) {
+            arrGender.push(arrGenderSize[i]?.gender);
+            arrSize.push(arrGenderSize[i]?.size);
+            const ageProductStart = +arrGenderSize[i]?.age?.split("-")[0];
+            const ageProductEnd = +arrGenderSize[i]?.age?.split("-")[1];
             if (
               ageStart === ageProductStart ||
               ageStart === ageProductEnd ||
@@ -307,17 +315,23 @@ const getAllProduct = (limit, page, sort, filter) => {
               (ageStart < ageProductStart && ageEnd > ageProductStart) ||
               (ageProductEnd > ageStart && ageStart > ageProductStart)
             ) {
-              arrAge.push(gtAge[i]?.age);
+              arrAge.push(arrGenderSize[i]?.age);
             }
           }
           console.log("arrAge", arrAge);
+          console.log("arrGender", arrGender);
+          console.log("arrSize", arrSize);
 
           totalProductPropose = await Product.count({
+            [label1]: { $in: arrGender },
             [label2]: { $in: arrAge },
+            [label3]: { $in: arrSize },
           });
 
           allProductFilterPropose = await Product.find({
+            [label1]: { $in: arrGender },
             [label2]: { $in: arrAge },
+            [label3]: { $in: arrSize },
           })
             .limit(limit)
             .skip(page * limit);
