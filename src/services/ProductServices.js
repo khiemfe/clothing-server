@@ -133,7 +133,7 @@ const deleteManyProduct = (ids) => {
 const getAllProduct = (limit, page, sort, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (filter && filter.length == 2) {
+      if (filter && filter.length == 2 && filter[0] == "name") {
         let allProductFilterMain;
         // let allProductFilterSecond;
         let allProductFilter = [];
@@ -240,6 +240,26 @@ const getAllProduct = (limit, page, sort, filter) => {
           pageCurrent: page + 1,
           totalPage: Math.ceil(totalProductSearch / limit),
           //   totalPage2: Math.ceil(totalProductSearch2 / limit),
+        });
+      }
+      if (filter && filter.length == 2 && filter[0] != "name") {
+        const totalTypeProduct = await Product.count({
+          [filter[0]]: { $regex: filter[1], $options: "i" },
+        });
+
+        const allTypeProduct = await Product.find({
+          [filter[0]]: { $regex: filter[1], $options: "i" },
+        })
+          .limit(limit)
+          .skip(page * limit);
+
+        resolve({
+          status: "OK",
+          message: "SUCCESS",
+          data: allTypeProduct,
+          totalProduct: totalTypeProduct,
+          pageCurrent: page + 1,
+          totalPage: Math.ceil(totalTypeProduct / limit),
         });
       }
 
