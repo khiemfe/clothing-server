@@ -242,7 +242,7 @@ const getAllProduct = (limit, page, sort, filter) => {
           //   totalPage2: Math.ceil(totalProductSearch2 / limit),
         });
       }
-      if (filter && filter.length == 2 && filter[0] != "name") {
+      if (filter && filter.length == 2 && filter[0] !== "name") {
         const totalTypeProduct = await Product.count({
           [filter[0]]: { $regex: filter[1], $options: "i" },
         });
