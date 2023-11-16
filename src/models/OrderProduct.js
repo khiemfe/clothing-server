@@ -24,7 +24,7 @@ const orderSchema = new Schema(
     shippingAddres: {
       fullName: { type: String, required: true },
       address: { type: String, required: true },
-      city: { type: String, required: true },
+      // city: { type: String, required: true },
       phone: { type: Number, required: true },
       // slug: { type: String, slug: 'name', unique: true },
     },
