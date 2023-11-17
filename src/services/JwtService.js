@@ -1,18 +1,18 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const genneralAccessTokenAdmin = async (payload) => {
-  // console.log('pay', payload)
-  const access_token = jwt.sign(
-    {
-      ...payload,
-    },
-    process.env.ACCESS_TOKEN,
-    { expiresIn: "30s" }
-  );
+// const genneralAccessTokenAdmin = async (payload) => {
+//   // console.log('pay', payload)
+//   const access_token = jwt.sign(
+//     {
+//       ...payload,
+//     },
+//     process.env.ACCESS_TOKEN,
+//     { expiresIn: "30s" }
+//   );
 
-  return access_token;
-};
+//   return access_token;
+// };
 
 const genneralAccessToken = async (payload) => {
   // console.log('pay', payload)
@@ -21,7 +21,7 @@ const genneralAccessToken = async (payload) => {
       ...payload,
     },
     process.env.ACCESS_TOKEN,
-    { expiresIn: "1d" }
+    { expiresIn: "2h" }
   );
 
   return access_token;
@@ -52,10 +52,18 @@ const refreshTokenJwtService = (token) => {
           });
         }
         console.log("??????????", user);
-        const access_token = await genneralAccessToken({
+        let access_token;
+        // if (user?.isAdmin) {
+        //   access_token = await genneralAccessTokenAdmin({
+        //     id: user?.id,
+        //     isAdmin: user?.isAdmin,
+        //   });
+        // } else {
+        access_token = await genneralAccessToken({
           id: user?.id,
           isAdmin: user?.isAdmin,
         });
+        // }
         console.log("access_token ---------------", access_token);
         resolve({
           status: "OK",
@@ -70,7 +78,7 @@ const refreshTokenJwtService = (token) => {
 };
 
 module.exports = {
-  genneralAccessTokenAdmin,
+  // genneralAccessTokenAdmin,
   genneralAccessToken,
   genneralRefreshToken,
   refreshTokenJwtService,

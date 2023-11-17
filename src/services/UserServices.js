@@ -1,7 +1,7 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const {
-  genneralAccessTokenAdmin,
+  // genneralAccessTokenAdmin,
   genneralAccessToken,
   genneralRefreshToken,
 } = require("./JwtService");
@@ -68,17 +68,17 @@ const loginUser = (userLogin) => {
 
       console.log("checkUser.isAdmin", checkUser.isAdmin);
       let access_token
-      if (checkUser.isAdmin) {
-        access_token = await genneralAccessTokenAdmin({
-          id: checkUser.id,
-          isAdmin: checkUser.isAdmin,
-        });
-      } else {
+      // if (checkUser.isAdmin) {
+      //   access_token = await genneralAccessTokenAdmin({
+      //     id: checkUser.id,
+      //     isAdmin: checkUser.isAdmin,
+      //   });
+      // } else {
         access_token = await genneralAccessToken({
           id: checkUser.id,
           isAdmin: checkUser.isAdmin,
         });
-      }
+      // }
 
       console.log("++++++++", access_token);
 
