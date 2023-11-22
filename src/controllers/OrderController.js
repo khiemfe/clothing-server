@@ -37,6 +37,26 @@ const createOrder = async (req, res) => {
   }
 };
 
+const getAllOrderDetails = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    console.log('orderId', orderId)
+    if (!orderId) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "The orderId is required",
+      });
+    }
+    const response = await OrderServices.getAllOrderDetails(orderId);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: "ERR 1",
+    });
+  }
+};
+
 module.exports = {
   createOrder,
+  getAllOrderDetails,
 };

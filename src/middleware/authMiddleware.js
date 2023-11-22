@@ -32,7 +32,7 @@ const authUserMiddleware = (req, res, next) => {
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     if (err) {
       //nếu nó chưa đăng nhập
-      return res.status(200).json({
+      return res.status(404).json({
         message: "The authemtication",
         status: "ERROR 4",
       });

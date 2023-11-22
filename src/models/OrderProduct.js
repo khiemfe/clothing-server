@@ -11,6 +11,7 @@ const orderSchema = new Schema(
       {
         name: { type: String, required: true },
         amount: { type: Number, required: true },
+        size: { type: String, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
         // slug: { type: String, slug: 'name', unique: true },

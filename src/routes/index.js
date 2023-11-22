@@ -1,6 +1,6 @@
 const UserRouter = require("./UserRouter");
 const ProductRouter = require("./ProductRouter");
-const OrderRouter = require("./OrderRouterr");
+const OrderRouterr = require("./OrderRouterr");
 const base64ToImage = require("base64-to-image");
 let { PythonShell } = require("python-shell");
 // const sharp = require("sharp");
@@ -9,7 +9,7 @@ let { PythonShell } = require("python-shell");
 const routes = (app) => {
   app.use("/api/user", UserRouter);
   app.use("/api/product", ProductRouter);
-  app.use("/api/order", OrderRouter);
+  app.use("/api/order", OrderRouterr);
 
   app.post("/save", (req, res) => {
     // Nhận dữ liệu từ ReactJS

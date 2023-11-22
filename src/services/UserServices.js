@@ -67,18 +67,10 @@ const loginUser = (userLogin) => {
       }
 
       console.log("checkUser.isAdmin", checkUser.isAdmin);
-      let access_token
-      // if (checkUser.isAdmin) {
-      //   access_token = await genneralAccessTokenAdmin({
-      //     id: checkUser.id,
-      //     isAdmin: checkUser.isAdmin,
-      //   });
-      // } else {
-        access_token = await genneralAccessToken({
-          id: checkUser.id,
-          isAdmin: checkUser.isAdmin,
-        });
-      // }
+      const access_token = await genneralAccessToken({
+        id: checkUser.id,
+        isAdmin: checkUser.isAdmin,
+      });
 
       console.log("++++++++", access_token);
 
@@ -105,7 +97,7 @@ const loginUser = (userLogin) => {
 };
 
 const updateUser = (id, data) => {
-  console.log('iddddd', id)
+  console.log("iddddd", id);
   return new Promise(async (resolve, reject) => {
     try {
       const checkUser = await User.findOne({
@@ -189,7 +181,7 @@ const getAllUser = () => {
 };
 
 const getDetailsUser = (id) => {
-  console.log('id id', id)
+  console.log("id id", id);
   return new Promise(async (resolve, reject) => {
     try {
       const user = await User.findOne({
