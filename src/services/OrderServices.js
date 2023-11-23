@@ -2,7 +2,7 @@ const Order = require("../models/OrderProduct");
 const Product = require("../models/ProductModel");
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
 
-const createOrder = (newOrder) => {
+const createOrder = (userId, newOrder) => {
   return new Promise(async (resolve, reject) => {
     const {
       orderItems,
@@ -70,7 +70,7 @@ const createOrder = (newOrder) => {
           itemsPrice,
           shippingPrice,
           totalPrice,
-          user,
+          user: userId,
         });
         if (createOrder) {
           resolve({
@@ -110,7 +110,98 @@ const getAllOrderDetails = (id) => {
   });
 };
 
+const getOrderDetails = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const order = await Order.findById({
+        _id: id,
+      });
+      if (order === null) {
+        resolve({
+          status: "ERR",
+          message: "The order is not defined",
+        });
+      }
+
+      resolve({
+        status: "OK",
+        message: "SUCESSS",
+        data: order,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const cancelOrderDetails = (id, data) => {
+  let check = 1;
+  console.log("orderIdid", id);
+  return new Promise(async (resolve, reject) => {
+    try {
+      let order = [];
+      const promises = data.map(async (order) => {
+        console.log("orderorder", order);
+        const quantityProperty = `quantity.size${order?.size}`;
+        console.log("quantityProperty", quantityProperty);
+        const productData = await Product.findOneAndUpdate(
+          {
+            _id: order.product,
+            selled: { $gte: order.amount },
+          },
+          {
+            $inc: {
+              [quantityProperty]: +order.amount,
+              selled: -order.amount,
+            },
+          },
+          // { multi: true },
+          { new: true }
+        );
+        console.log("productData", productData);
+        if (check === 1) {
+          if (productData) {
+            check = 2;
+            order = await Order.findByIdAndDelete(id);
+            console.log("orderrr", order);
+            if (order === null) {
+              resolve({
+                status: "ERR",
+                message: "The order is not defined",
+              });
+            }
+          } else {
+            return {
+              status: "OK",
+              message: "ERR",
+              id: order.product,
+            };
+          }
+        }
+      });
+      const results = await Promise.all(promises);
+      const newData = results && results[0] && results[0].id;
+
+      if (newData) {
+        resolve({
+          status: "ERR",
+          message: `San pham voi id: ${newData} khong ton tai`,
+        });
+      }
+      resolve({
+        status: "OK",
+        message: "success",
+        data: order,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createOrder,
   getAllOrderDetails,
+  getOrderDetails,
+  cancelOrderDetails,
 };

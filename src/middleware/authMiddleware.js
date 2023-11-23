@@ -29,6 +29,7 @@ const authUserMiddleware = (req, res, next) => {
   const token = req.headers.token?.split(" ")[1];
   console.log("------2token2-----", token);
   const userId = req.params.id;
+  console.log("req.params", req.params);
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
     if (err) {
       //nếu nó chưa đăng nhập

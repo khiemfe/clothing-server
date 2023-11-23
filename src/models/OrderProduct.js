@@ -14,12 +14,12 @@ const orderSchema = new Schema(
         size: { type: String, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
-        // slug: { type: String, slug: 'name', unique: true },
         product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
           required: true,
         },
+        userId: { type: String, required: true },
       },
     ],
     shippingAddres: {
