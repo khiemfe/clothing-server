@@ -14,11 +14,6 @@ const orderSchema = new Schema(
         size: { type: String, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
         userId: { type: String, required: true },
       },
     ],
@@ -27,7 +22,6 @@ const orderSchema = new Schema(
       address: { type: String, required: true },
       // city: { type: String, required: true },
       phone: { type: Number, required: true },
-      // slug: { type: String, slug: 'name', unique: true },
     },
 
     paymentMethod: { type: String, required: true },

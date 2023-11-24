@@ -65,25 +65,19 @@ const loginUser = (userLogin) => {
           message: "The password or user in incorrect",
         });
       }
-
       console.log("checkUser.isAdmin", checkUser.isAdmin);
       const access_token = await genneralAccessToken({
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
       });
-
       console.log("++++++++", access_token);
-
-      // console.log(access_token)
       console.log(checkUser.id);
       console.log(checkUser.isAdmin);
       const refresh_token = await genneralRefreshToken({
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
       });
-
       console.log("=========", refresh_token);
-
       resolve({
         status: "OK",
         message: "SUCCESS",

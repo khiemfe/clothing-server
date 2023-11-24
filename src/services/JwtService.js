@@ -1,19 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-// const genneralAccessTokenAdmin = async (payload) => {
-//   // console.log('pay', payload)
-//   const access_token = jwt.sign(
-//     {
-//       ...payload,
-//     },
-//     process.env.ACCESS_TOKEN,
-//     { expiresIn: "30s" }
-//   );
-
-//   return access_token;
-// };
-
 const genneralAccessToken = async (payload) => {
   // console.log('pay', payload)
   const access_token = jwt.sign(
@@ -53,12 +40,6 @@ const refreshTokenJwtService = (token) => {
         }
         console.log("??????????", user);
         let access_token;
-        // if (user?.isAdmin) {
-        //   access_token = await genneralAccessTokenAdmin({
-        //     id: user?.id,
-        //     isAdmin: user?.isAdmin,
-        //   });
-        // } else {
         access_token = await genneralAccessToken({
           id: user?.id,
           isAdmin: user?.isAdmin,
@@ -78,7 +59,6 @@ const refreshTokenJwtService = (token) => {
 };
 
 module.exports = {
-  // genneralAccessTokenAdmin,
   genneralAccessToken,
   genneralRefreshToken,
   refreshTokenJwtService,
