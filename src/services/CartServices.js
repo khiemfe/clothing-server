@@ -2,12 +2,12 @@ const Cart = require("../models/CartModel");
 
 const createCart = (userId, data) => {
   return new Promise(async (resolve, reject) => {
-    const { name, amount, size, image, price } = data;
-    console.log('data', data)
+    const { name, amount, size, image, price, productId } = data;
+    console.log("data", data);
     try {
       const checkCart = await Cart.findOne({
         userId: userId,
-        name: name,
+        productId: productId,
         size: size,
       });
       if (checkCart !== null) {
@@ -35,6 +35,7 @@ const createCart = (userId, data) => {
           image,
           price,
           userId,
+          productId,
         });
         if (createCart) {
           resolve({
@@ -100,12 +101,13 @@ const getAllCart = (id) => {
 // };
 
 const deleteCart = (id) => {
+  console.log("iddelete", id);
   return new Promise(async (resolve, reject) => {
     try {
       const checkCart = await Cart.findOne({
         _id: id,
       });
-      console.log('checkCart', checkCart)
+      console.log("checkCart", checkCart);
       if (checkCart === null) {
         resolve({
           status: "ERR",
@@ -143,5 +145,5 @@ module.exports = {
   getAllCart,
   // getOrderDetails,
   deleteCart,
-  deleteManyCart
+  deleteManyCart,
 };

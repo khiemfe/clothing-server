@@ -9,6 +9,7 @@ const cartSchema = new Schema(
     image: { type: String, required: true },
     price: { type: Number, required: true },
     userId: { type: String, required: true },
+    productId: { type: String, required: true },
   },
   {
     timestamps: true,

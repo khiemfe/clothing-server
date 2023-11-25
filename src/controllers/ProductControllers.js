@@ -5,7 +5,7 @@ const createProduct = async (req, res) => {
   try {
     const { name, image, gender, price, age, size, quantity } = req.body;
     console.log("ppppppppppppppppp", req.body);
-    if (!name || !image || !gender || !price || !age || !size || !quantity) {
+    if (!name || !image || !gender || !price || !age || !size) {
       return res.status(404).json({
         status: "ERR",
         message: "The input is requireddd",

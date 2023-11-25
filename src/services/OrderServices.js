@@ -17,11 +17,11 @@ const createOrder = (userId, newOrder) => {
     } = newOrder;
     try {
       const promises = orderItems?.map(async (order) => {
-        console.log("orderSize", order?.size);
+        console.log("orderSize", order.producId);
         const quantityProperty = `quantity.size${order?.size}`;
         const productData = await Product.findOneAndUpdate(
           {
-            _id: order?.product,
+            _id: order?.productId,
             [quantityProperty]: { $gte: order?.amount }, //ktra xem còn đủ sl không
           },
           {
@@ -42,7 +42,7 @@ const createOrder = (userId, newOrder) => {
         } else {
           return {
             message: "Không có đủ sản phẩm",
-            id: order?.product,
+            id: order?.productId,
           };
         }
       });
@@ -137,6 +137,7 @@ const getOrderDetails = (id) => {
 const cancelOrderDetails = (id, data) => {
   let check = 1;
   console.log("orderIdid", id);
+  console.log("datadata", data);
   return new Promise(async (resolve, reject) => {
     try {
       let order = [];
@@ -146,7 +147,7 @@ const cancelOrderDetails = (id, data) => {
         console.log("quantityProperty", quantityProperty);
         const productData = await Product.findOneAndUpdate(
           {
-            _id: order.product,
+            _id: order.productId,
             selled: { $gte: order.amount },
           },
           {
@@ -174,7 +175,7 @@ const cancelOrderDetails = (id, data) => {
             return {
               status: "OK",
               message: "ERR",
-              id: order.product,
+              id: order.id,
             };
           }
         }

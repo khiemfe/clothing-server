@@ -3,13 +3,14 @@ const CartServices = require("../services/CartServices");
 const createCart = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { name, amount, size, image, price } = req.body;
+    const { name, amount, size, image, price, productId } = req.body;
     if (
       !name ||
       !amount ||
       !size ||
       !image ||
-      !price
+      !price ||
+      !productId
     ) {
       return res.status(404).json({
         status: "ERR",
