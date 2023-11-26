@@ -18,7 +18,7 @@ const routes = (app) => {
   app.post("/save", (req, res) => {
     // Nhận dữ liệu từ ReactJS
     const text = req.body.imageBase64;
-    base64ToImage(text.toString(), "my_images/");
+    base64ToImage(text.toString(), "my_images/img.jpeg");
 
     //   const imagee = "my_images/khiem.png";
     //   sharp(imagee)
@@ -49,7 +49,7 @@ const routes = (app) => {
 
   app.get("/save", async (req, res) => {
     const imagee = "my_images/img.jpeg";
-    let options = {
+    const options = {
       pythonPath: "python3",
       args: [imagee],
     };

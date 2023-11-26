@@ -1,5 +1,6 @@
 const Order = require("../models/OrderProduct");
 const Product = require("../models/ProductModel");
+const EmailServices = require("./EmailServices");
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
 
 const createOrder = (userId, newOrder) => {
@@ -15,6 +16,7 @@ const createOrder = (userId, newOrder) => {
       phone,
       isPaid,
       paidAt,
+      email
       // user,
     } = newOrder;
     try {
@@ -77,6 +79,7 @@ const createOrder = (userId, newOrder) => {
           paidAt,
         });
         if (createOrder) {
+          await EmailServices.sendEmailCreateOrder(email, orderItems, totalPrice, shippingPrice);
           resolve({
             status: "OK",
             message: "success",
