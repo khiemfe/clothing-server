@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const CartController = require("../controllers/CartController");
-const { authUserMiddleware } = require("../middleware/authMiddleware");
+const {
+  authMiddleware,
+  authUserMiddleware,
+} = require("../middleware/authMiddleware");
 
 router.post("/create/:id", authUserMiddleware, CartController.createCart);
+router.put("/update/:id", authMiddleware, CartController.updateCart);
 router.get("/get-all-cart/:id", authUserMiddleware, CartController.getAllCart);
 // router.get(
 //   "/get-details-cart/:id",
@@ -11,15 +15,21 @@ router.get("/get-all-cart/:id", authUserMiddleware, CartController.getAllCart);
 //   CartController.getDetailsOrder
 // );
 router.delete(
-  "/delete-cart/:id",
+  "/delete-cart-details/:id/:cartId",
   authUserMiddleware,
-  CartController.deleteCart
+  CartController.deleteCartDetails
 );
 
 router.post(
-  "/delete-many-cart",
+  "/delete-many-cart/:id",
   authUserMiddleware,
   CartController.deleteManyCart
+);
+
+router.post(
+  "/delete-update-cart",
+  authMiddleware,
+  CartController.deleteUpdateCart
 );
 
 module.exports = router;

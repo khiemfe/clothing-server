@@ -51,6 +51,35 @@ const createCart = (userId, data) => {
   });
 };
 
+const updateCart = (productId, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkCart = await Cart.findOne({
+        productId: productId,
+      });
+      console.log('check cart', checkCart)
+      if (checkCart === null) {
+        resolve({
+          status: "ERR",
+          message: "The cart is not defined",
+        });
+      }
+
+      const updateCart = await Cart.findByIdAndUpdate(checkCart._id, data, {
+        new: true,
+      });
+
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        updateCart,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 const getAllCart = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -76,31 +105,7 @@ const getAllCart = (id) => {
   });
 };
 
-// const getOrderDetails = (id) => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       const order = await Order.findById({
-//         _id: id,
-//       });
-//       if (order === null) {
-//         resolve({
-//           status: "ERR",
-//           message: "The order is not defined",
-//         });
-//       }
-
-//       resolve({
-//         status: "OK",
-//         message: "SUCESSS",
-//         data: order,
-//       });
-//     } catch (e) {
-//       reject(e);
-//     }
-//   });
-// };
-
-const deleteCart = (id) => {
+const deleteCartDetails = (id) => {
   console.log("iddelete", id);
   return new Promise(async (resolve, reject) => {
     try {
@@ -125,6 +130,32 @@ const deleteCart = (id) => {
   });
 };
 
+const deleteUpdateCart = (ids) => {
+  console.log("iddds", ids);
+  return new Promise(async (resolve, reject) => {
+    try {
+      ids.map(async (id) => {
+        const checkCart = await Cart.findOne({
+          productId: id,
+        });
+        if(checkCart) {
+          await Cart.findByIdAndDelete(checkCart._id);
+          resolve({
+            status: "OK",
+            message: "DELETE UPDATE PRODUCT SUCCESS",
+          });
+        } else {
+          resolve({
+            message: "Cart không có trùng vs product đã xoá",
+          });
+        }
+      })
+    } catch (e) {
+      console.log("loi", e);
+    }
+  });
+};
+
 const deleteManyCart = (ids) => {
   console.log("ids", ids);
   return new Promise(async (resolve, reject) => {
@@ -142,8 +173,9 @@ const deleteManyCart = (ids) => {
 
 module.exports = {
   createCart,
+  updateCart,
   getAllCart,
-  // getOrderDetails,
-  deleteCart,
+  deleteCartDetails,
   deleteManyCart,
+  deleteUpdateCart
 };

@@ -13,11 +13,13 @@ const createOrder = (userId, newOrder) => {
       fullName,
       address,
       phone,
-      user,
+      isPaid,
+      paidAt,
+      // user,
     } = newOrder;
     try {
       const promises = orderItems?.map(async (order) => {
-        console.log("orderSize", order.producId);
+        console.log("orderSize", order.productId);
         const quantityProperty = `quantity.size${order?.size}`;
         const productData = await Product.findOneAndUpdate(
           {
@@ -71,6 +73,8 @@ const createOrder = (userId, newOrder) => {
           shippingPrice,
           totalPrice,
           user: userId,
+          isPaid,
+          paidAt,
         });
         if (createOrder) {
           resolve({
