@@ -2,7 +2,7 @@ const Cart = require("../models/CartModel");
 
 const createCart = (userId, data) => {
   return new Promise(async (resolve, reject) => {
-    const { name, amount, size, image, price, productId } = data;
+    const { name, amount, size, image, price, productId, type } = data;
     console.log("data", data);
     try {
       const checkCart = await Cart.findOne({
@@ -34,6 +34,7 @@ const createCart = (userId, data) => {
           size,
           image,
           price,
+          type,
           userId,
           productId,
         });

@@ -14,13 +14,16 @@ const createOrder = async (req, res) => {
       phone,
     } = req.body;
     console.log("ppppppppppppppppp", req.body);
-    console.log('kq:',paymentMethod,
-    itemsPrice,
-    shippingPrice,
-    totalPrice,
-    fullName,
-    address,
-    phone,)
+    console.log(
+      "kq:",
+      paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      totalPrice,
+      fullName,
+      address,
+      phone
+    );
     if (
       !paymentMethod ||
       !itemsPrice ||
@@ -86,9 +89,9 @@ const getDetailsOrder = async (req, res) => {
 const cancelOrderDetails = async (req, res) => {
   try {
     const data = req.body.orderItems;
-    console.log('dataOrder', data)
+    console.log("dataOrder", data);
     const orderId = req.body.orderId;
-    console.log('orderId', orderId)
+    console.log("orderId", orderId);
     if (!orderId) {
       return res.status(200).json({
         status: "ERR",
@@ -105,9 +108,23 @@ const cancelOrderDetails = async (req, res) => {
     });
   }
 };
+
+const getAllOrder = async (req, res) => {
+  try {
+    const data = await OrderServices.getAllOrder();
+    return res.status(200).json(data);
+  } catch (e) {
+    // console.log(e)
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
 module.exports = {
   createOrder,
   getAllOrderDetails,
   getDetailsOrder,
   cancelOrderDetails,
+  getAllOrder,
 };

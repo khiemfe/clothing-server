@@ -3,9 +3,9 @@ const JwtService = require("../services/JwtService");
 
 const createProduct = async (req, res) => {
   try {
-    const { name, image, gender, price, age, size, quantity } = req.body;
+    const { name, image, gender, price, age, size, type } = req.body;
     console.log("ppppppppppppppppp", req.body);
-    if (!name || !image || !gender || !price || !age || !size) {
+    if (!name || !image || !gender || !price || !age || !size || !type) {
       return res.status(404).json({
         status: "ERR",
         message: "The input is requireddd",

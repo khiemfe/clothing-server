@@ -14,6 +14,7 @@ const orderSchema = new Schema(
         size: { type: String, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
+        type: { type: String, required: true },
         userId: { type: String, required: true },
         productId: { type: String, required: true },
       },
@@ -23,6 +24,7 @@ const orderSchema = new Schema(
       address: { type: String, required: true },
       // city: { type: String, required: true },
       phone: { type: Number, required: true },
+      email: { type: String, required: true },
     },
 
     paymentMethod: { type: String, required: true },
@@ -33,9 +35,8 @@ const orderSchema = new Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
-    isDelivered: { type: Boolean, default: false },
+    DeliveryStatus: { type: String, default: "NOT" },
     deliveredAt: { type: Date },
-    email: { type: String },
   },
   {
     timestamps: true,

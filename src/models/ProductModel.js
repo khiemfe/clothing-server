@@ -11,7 +11,7 @@ const productSchema = new Schema(
     name: { type: String, required: true },
     image: { type: String, required: true },
     gender: { type: String, required: true },
-    type: { type: String },
+    type: { type: String, required: true  },
     price: { type: Number, required: true },
     quantity: {
       sizeS: { type: Number },

@@ -16,7 +16,7 @@ const createOrder = (userId, newOrder) => {
       phone,
       isPaid,
       paidAt,
-      email
+      email,
       // user,
     } = newOrder;
     try {
@@ -53,6 +53,7 @@ const createOrder = (userId, newOrder) => {
       const results = await Promise.all(promises);
       console.log("results", results);
       const newData = results.filter((item) => item.id);
+      console.log('newData', newData)
       if (newData.length) {
         const arrId = [];
         newData.forEach((item) => {
@@ -69,6 +70,7 @@ const createOrder = (userId, newOrder) => {
             fullName,
             phone,
             address,
+            email,
           },
           paymentMethod,
           itemsPrice,
@@ -79,7 +81,12 @@ const createOrder = (userId, newOrder) => {
           paidAt,
         });
         if (createOrder) {
-          await EmailServices.sendEmailCreateOrder(email, orderItems, totalPrice, shippingPrice);
+          await EmailServices.sendEmailCreateOrder(
+            email,
+            orderItems,
+            totalPrice,
+            shippingPrice
+          );
           resolve({
             status: "OK",
             message: "success",
@@ -207,9 +214,28 @@ const cancelOrderDetails = (id, data) => {
   });
 };
 
+const getAllOrder = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allOrder = await Order.find().sort({
+        createdAt: -1,
+        updatedAt: -1,
+      });
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: allOrder,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createOrder,
   getAllOrderDetails,
   getOrderDetails,
   cancelOrderDetails,
+  getAllOrder,
 };
