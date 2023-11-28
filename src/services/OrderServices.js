@@ -21,47 +21,43 @@ const createOrder = (userId, newOrder) => {
     } = newOrder;
     try {
       const promises = orderItems?.map(async (order) => {
-        console.log("orderSize", order.productId);
         const quantityProperty = `quantity.size${order?.size}`;
         const productData = await Product.findOneAndUpdate(
           {
             _id: order?.productId,
             [quantityProperty]: { $gte: order?.amount }, //ktra xem còn đủ sl không
           },
-          {
-            $inc: {
-              [quantityProperty]: -order?.amount, //cập nhật lại sl size
-              selled: +order?.amount, //cập nhật lại sl đã bán
-            },
-          },
           { new: true } //trả về dữ liệu mới sau khi cập nhật
         );
+        console.log('productData', productData)
         if (productData) {
-          if (createOrder) {
-            return {
-              status: "OK",
-              message: "SUCCESS",
-            };
-          }
+          // if (createOrder) {
+          return {
+            status: "OK",
+            message: "SUCCESS",
+          };
+          // }
         } else {
           return {
+            status: "ERR",
             message: "Không có đủ sản phẩm",
             id: order?.productId,
+            name: order?.name,
           };
         }
       });
       const results = await Promise.all(promises);
       console.log("results", results);
       const newData = results.filter((item) => item.id);
-      console.log('newData', newData)
+      console.log("newData", newData);
       if (newData.length) {
         const arrId = [];
         newData.forEach((item) => {
-          arrId.push(item.id);
+          arrId.push(item.name);
         });
         resolve({
           status: "ERR",
-          message: `San pham voi id: ${arrId.join(",")} khong du hang`,
+          message: `Sản phẩm ${arrId.join(",")} không đủ hàng`,
         });
       } else {
         const createOrder = await Order.create({
@@ -81,6 +77,22 @@ const createOrder = (userId, newOrder) => {
           paidAt,
         });
         if (createOrder) {
+          orderItems?.map(async (order) => {
+            const quantityProperty = `quantity.size${order?.size}`;
+            await Product.findOneAndUpdate(
+              {
+                _id: order?.productId,
+                [quantityProperty]: { $gte: order?.amount }, //ktra xem còn đủ sl không
+              },
+              {
+                $inc: {
+                  [quantityProperty]: -order?.amount, //cập nhật lại sl size
+                  selled: +order?.amount, //cập nhật lại sl đã bán
+                },
+              },
+              { new: true } //trả về dữ liệu mới sau khi cập nhật
+            );
+          });
           await EmailServices.sendEmailCreateOrder(
             email,
             orderItems,
@@ -125,6 +137,7 @@ const getAllOrderDetails = (id) => {
 };
 
 const getOrderDetails = (id) => {
+  console.log('get id', id)
   return new Promise(async (resolve, reject) => {
     try {
       const order = await Order.findById({
@@ -156,12 +169,12 @@ const cancelOrderDetails = (id, data) => {
     try {
       let order = [];
       const promises = data.map(async (order) => {
-        console.log("orderorder", order);
+        console.log("orderorder", order?.productId);
         const quantityProperty = `quantity.size${order?.size}`;
         console.log("quantityProperty", quantityProperty);
         const productData = await Product.findOneAndUpdate(
           {
-            _id: order.productId,
+            _id: order?.productId,
             selled: { $gte: order.amount },
           },
           {

@@ -40,7 +40,11 @@ const createOrder = async (req, res) => {
     }
     const response = await OrderServices.createOrder(userId, req.body);
     console.log("ggggggggggggggg", response);
-    return res.status(200).json(response);
+    if (response?.status === "OK") {
+      return res.status(200).json(response);
+    } else {
+      return res.status(404).json(response);
+    }
   } catch (e) {
     return res.status(404).json({
       message: e,
@@ -69,7 +73,9 @@ const getAllOrderDetails = async (req, res) => {
 
 const getDetailsOrder = async (req, res) => {
   try {
-    const orderId = req.params.id;
+    const orderId = req.params.orderId;
+    console.log("orderId", orderId);
+
     if (!orderId) {
       return res.status(200).json({
         status: "ERR",

@@ -13,7 +13,7 @@ router.get(
   OrderControllers.getAllOrderDetails
 );
 router.get(
-  "/get-details-order/:id",
+  "/get-details-order/:id/:orderId",
   authUserMiddleware,
   OrderControllers.getDetailsOrder
 );
