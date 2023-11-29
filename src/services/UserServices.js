@@ -1,4 +1,5 @@
 const User = require("../models/UserModel");
+const OTP = require("../models/OTPModel");
 const bcrypt = require("bcrypt");
 const {
   // genneralAccessTokenAdmin,
@@ -8,7 +9,7 @@ const {
 
 const createUser = (newUser) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, password, confirmPassword, phone } = newUser;
+    const { name, email, password, confirmPassword, phone, otp } = newUser;
     try {
       const checkUser = await User.findOne({
         email: email,
@@ -19,19 +20,31 @@ const createUser = (newUser) => {
           message: "The email is already",
         });
       } else {
-        const hash = bcrypt.hashSync(password.toString(), 10);
-        const createUser = await User.create({
-          name,
-          email,
-          password: hash,
-          confirmPassword,
-          phone,
+        const checkOTP = await OTP.findOne({
+          otp: otp,
         });
-        if (createUser) {
+        console.log("checkOTP", checkOTP);
+        const hash = bcrypt.hashSync(password.toString(), 10);
+
+        if (checkOTP) {
+          const createUser = await User.create({
+            // name,
+            email,
+            password: hash,
+            // confirmPassword,
+            // phone,
+          });
+          if (createUser) {
+            resolve({
+              status: "OK",
+              message: "SUCCESS",
+              data: createUser,
+            });
+          }
+        } else {
           resolve({
-            status: "OK",
-            message: "SUCCESS",
-            data: createUser,
+            status: "ERR",
+            message: "Mã OTP không chính xác",
           });
         }
       }
@@ -51,7 +64,7 @@ const loginUser = (userLogin) => {
       if (checkUser === null) {
         resolve({
           status: "ERR",
-          message: "The user is not defined",
+          message: "Email này đã tồn tại",
         });
       }
       //  console.log(typeof password.toString())
@@ -112,6 +125,52 @@ const updateUser = (id, data) => {
         message: "SUCCESS",
         updateUser,
       });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const updatePassword = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({
+        email: data?.email,
+      });
+      if (checkUser === null) {
+        resolve({
+          status: "ERR",
+          message: "The user is not defined",
+        });
+      }
+      const hash = bcrypt.hashSync(data?.password.toString(), 10);
+      const update = {
+        $set: {
+          password: hash,
+        },
+      };
+      const checkOTP = await OTP.findOne({
+        otp: data?.otp,
+      });
+
+      if (checkOTP) {
+        const updateUser = await User.updateOne(
+          {
+            email: data?.email,
+          },
+          update
+        );
+        resolve({
+          status: "OK",
+          message: "SUCCESS",
+          updateUser,
+        });
+      } else {
+        resolve({
+          status: "ERR",
+          message: "Mã OTP Không chính xác",
+        });
+      }
     } catch (e) {
       reject(e);
     }
@@ -202,6 +261,7 @@ module.exports = {
   createUser,
   loginUser,
   updateUser,
+  updatePassword,
   deleteUser,
   getAllUser,
   getDetailsUser,

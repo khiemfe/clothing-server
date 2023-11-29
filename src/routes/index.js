@@ -3,6 +3,7 @@ const ProductRouter = require("./ProductRouter");
 const OrderRouterr = require("./OrderRouterr");
 const CartRouter = require("./CartRouter");
 const PaymentRouter = require("./PaymentRouter");
+const OTPRouter = require("./OTPRouter");
 const base64ToImage = require("base64-to-image");
 let { PythonShell } = require("python-shell");
 // const sharp = require("sharp");
@@ -14,6 +15,7 @@ const routes = (app) => {
   app.use("/api/order", OrderRouterr);
   app.use("/api/cart", CartRouter);
   app.use("/api/payment", PaymentRouter);
+  app.use("/api/otp", OTPRouter);
 
   app.post("/save", (req, res) => {
     // Nhận dữ liệu từ ReactJS

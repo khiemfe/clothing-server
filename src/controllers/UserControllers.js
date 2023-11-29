@@ -3,23 +3,28 @@ const JwtService = require("../services/JwtService");
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword, phone } = req.body;
+    const { name, email, password, confirmPassword, otp, phone } = req.body;
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = reg.test(email);
-    if (!email || !password || !confirmPassword) {
+    if (!email || !password || !confirmPassword || !otp) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is required",
+        message: "Không được để trống",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        message: "Sai định dạnh email",
+        message: "Sai định dạng email",
+      });
+    } else if (password?.length < 6) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Mật khẩu phải ít nhất 6 kí tự",
       });
     } else if (password !== confirmPassword) {
       return res.status(200).json({
         status: "ERR",
-        message: "The password is equal confirmPassword",
+        message: "Mật khẩu không trùng khớp",
       });
     }
     const response = await UserServices.createUser(req.body);
@@ -39,12 +44,12 @@ const loginUser = async (req, res) => {
     if (!email || !password) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is required",
+        message: "Không được để trống",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is email",
+        message: "Sai định dạng email",
       });
     }
     const response = await UserServices.loginUser(req.body);
@@ -110,6 +115,46 @@ const updateUser = async (req, res) => {
     console.log("userId:", userId);
     console.log("data:", data);
     const response = await UserServices.updateUser(userId, data);
+
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const data = req.body;
+
+    console.log('datata', data)
+    if (
+      !data?.email ||
+      !data?.password ||
+      !data?.confirmPassword ||
+      !data?.otp
+    ) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Không được để trống",
+      });
+    }
+    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    const isCheckEmail = reg.test(data?.email);
+    if (!isCheckEmail) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Wrong email format",
+      });
+    }
+    if (data?.password !== data?.confirmPassword) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Mật khẩu không trùng khớp",
+      });
+    }
+    const response = await UserServices.updatePassword(data);
 
     return res.status(200).json(response);
   } catch (e) {
@@ -214,6 +259,7 @@ module.exports = {
   createUser,
   loginUser,
   updateUser,
+  updatePassword,
   deleteUser,
   getAllUser,
   getDetailsUser,

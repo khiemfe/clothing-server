@@ -39,7 +39,7 @@ const sendEmailCreateOrder = async (
   transporter
     .sendMail(message)
     .then((info) => {
-      console.log('info', info)
+      console.log("info", info);
       return {
         msg: "tou should",
         info: info.messageId,
@@ -47,10 +47,52 @@ const sendEmailCreateOrder = async (
       };
     })
     .catch((error) => {
-      return json({ error });
+      return error;
     });
+};
+
+const sendEmailCreateUser = async (email) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: process.env.MAIL_ACCOUNT,
+      pass: process.env.MAIL_PASSWORD,
+    },
+  });
+
+  const numbers = [];
+  for (let i = 0; i < 6; i++) {
+    numbers.push(Math.floor(Math.random() * 10));
+  }
+  numbers.join("");
+  console.log("number", numbers.join(""));
+
+  const message = {
+    from: process.env.MAIL_ACCOUNT, // sender address
+    to: email, // list of receivers
+    subject: "Đây là mã OTP của bạn! ", // Subject line
+    text: "Hello world?", // plain text body
+    html: `Mã OTP của bạn là: <b>${numbers.join(
+      ""
+    )}</b> <div>*Lưu ý:Mã này sẽ hết hạn sau 5 phút</div>`, // html body
+  };
+
+  transporter
+    .sendMail(message)
+    .then(() => {
+      return numbers.join("");
+    })
+    .catch((error) => {
+      return error
+    });
+
+  return numbers.join("");
 };
 
 module.exports = {
   sendEmailCreateOrder,
+  sendEmailCreateUser,
 };
