@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is email",
+        message: "Sai định dạnh email",
       });
     } else if (password !== confirmPassword) {
       return res.status(200).json({
@@ -88,6 +88,22 @@ const updateUser = async (req, res) => {
       return res.status(200).json({
         status: "ERR",
         message: "The userId is required",
+      });
+    }
+
+    if (!data?.phone.match(/^[0-9]{10}$/)) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Wrong phone number format",
+      });
+    }
+
+    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    const isCheckEmail = reg.test(data?.email);
+    if (!isCheckEmail) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Wrong email format",
       });
     }
 
