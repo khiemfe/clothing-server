@@ -2,8 +2,8 @@
 # import sys
 import sys
 sys.path.insert(0, '/path/to/opencv/library')
-import cv2
 import torch
+import cv2
 
 modelBMI = torch.hub.load("ultralytics/yolov5", "custom", path="Model_BMINew.pt")
 modelAge = torch.hub.load("ultralytics/yolov5", "custom", path="Model_AgeNew.pt")
