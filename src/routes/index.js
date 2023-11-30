@@ -20,7 +20,7 @@ const routes = (app) => {
   app.post("/save", (req, res) => {
     // Nhận dữ liệu từ ReactJS
     const text = req.body.imageBase64;
-    base64ToImage(text.toString(), "my_images/img.jpeg");
+    base64ToImage(text.toString(), "my_images");
 
     //   const imagee = "my_images/khiem.png";
     //   sharp(imagee)
