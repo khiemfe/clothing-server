@@ -17,13 +17,10 @@ const routes = (app) => {
   app.use("/api/payment", PaymentRouter);
   app.use("/api/otp", OTPRouter);
 
-  app.post("/save", (req, res) => {
+  app.post("https://clothing-server-btam.onrender.com/save", (req, res) => {
     // Nhận dữ liệu từ ReactJS
     const text = req.body.imageBase64;
-
-    console.log('text', text)
-
-    // base64ToImage(text.toString(), "my_images");
+    base64ToImage(text.toString(), "my_images");
 
     //   const imagee = "my_images/khiem.png";
     //   sharp(imagee)
@@ -52,7 +49,7 @@ const routes = (app) => {
     //     });
   });
 
-  app.get("/save", async (req, res) => {
+  app.get("https://clothing-server-btam.onrender.com/save", async (req, res) => {
     const imagee = "my_images/img.jpeg";
     const options = {
       pythonPath: "python3",
