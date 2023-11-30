@@ -5,7 +5,6 @@ const CartRouter = require("./CartRouter");
 const PaymentRouter = require("./PaymentRouter");
 const OTPRouter = require("./OTPRouter");
 const ProposedRouter = require("./ProposedRouter");
-let { PythonShell } = require("python-shell");
 // const sharp = require("sharp");
 // const fs = require("fs");
 
@@ -50,21 +49,7 @@ const routes = (app) => {
   //   //     });
   // })
 
-  app.get("https://clothing-server-btam.onrender.com/save", async (req, res) => {
-    const imagee = "my_images/img.jpeg";
-    const options = {
-      pythonPath: "python3",
-      args: [imagee],
-    };
-    PythonShell.run("model.py", options, function (err, results) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("results", results);
-        res.json(results);
-      }
-    });
-  });
+  
 };
 
 module.exports = routes;
