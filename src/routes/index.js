@@ -23,7 +23,7 @@ const routes = (app) => {
 
     console.log('text', text)
 
-    base64ToImage(text.toString(), "my_images");
+    // base64ToImage(text.toString(), "my_images");
 
     //   const imagee = "my_images/khiem.png";
     //   sharp(imagee)
