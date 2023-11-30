@@ -27,7 +27,6 @@
     "nodemailer": "^6.9.7",
     "nodemon": "^3.0.1",
     "python-shell": "^3.0.1",
-    "sharp": "^0.32.6",
-    "opencv-python": "^4.5.1"
+    "sharp": "^0.32.6"
   }
 }
