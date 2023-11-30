@@ -5,7 +5,6 @@ const CartRouter = require("./CartRouter");
 const PaymentRouter = require("./PaymentRouter");
 const OTPRouter = require("./OTPRouter");
 const ProposedRouter = require("./ProposedRouter");
-const base64ToImage = require("base64-to-image");
 let { PythonShell } = require("python-shell");
 // const sharp = require("sharp");
 // const fs = require("fs");
