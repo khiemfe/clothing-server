@@ -1,7 +1,6 @@
 # import cv2
 # import sys
 import sys
-
 sys.path.insert(0, "/home/user/opencv/lib/python3.8/site-packages")
 import cv2
 sys.path.insert(0, "/home/user/opencv/lib/python3.8/site-packages")
