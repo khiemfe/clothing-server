@@ -105,12 +105,13 @@ const loginUser = (userLogin) => {
 
 const updateUser = (id, data) => {
   console.log("iddddd", id);
+  console.log("dattaa", data);
   return new Promise(async (resolve, reject) => {
     try {
       const checkUser = await User.findOne({
         _id: id,
       });
-      //  console.log('checkUser', checkUser)
+       console.log('checkUser', checkUser)
       if (checkUser === null) {
         resolve({
           status: "ERR",

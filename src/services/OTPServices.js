@@ -6,28 +6,40 @@ const createOTP = (newUser) => {
     const { email } = newUser;
     console.log("email", email);
     try {
-      // const checkUser = await User.findOne({
-      //   email: email,
-      // });
-      // if (checkUser !== null) {
-      //   resolve({
-      //     status: "ERR",
-      //     message: "The email is already",
-      //   });
-      // } else {
-      // }
-      const numbers = await EmailServices.sendEmailCreateUser(email);
-      console.log("numbers", numbers);
-      const createOTP = await OTP.create({
-        email,
-        otp: numbers,
+      const checkUser = await OTP.findOne({
+        email: email,
       });
-      if (createOTP) {
+      console.log('checkUser', checkUser)
+      const numbers = await EmailServices.sendEmailCreateUser(email);
+      if (checkUser !== null) {
+        const update = {
+          $set: {
+            otp: numbers,
+          },
+        };
+        const updateOTP = await OTP.updateOne(
+          {
+            email: email,
+          },
+          update
+        );
         resolve({
           status: "OK",
-          message: "SUCCESS",
-          data: createOTP,
+          message: "Thay đổi mã OTP thành công",
+          data: updateOTP,
         });
+      } else {
+        const createOTP = await OTP.create({
+          email,
+          otp: numbers,
+        });
+        if (createOTP) {
+          resolve({
+            status: "OK",
+            message: "Thêm mã OTP thành công",
+            data: createOTP,
+          });
+        }
       }
     } catch (e) {
       reject({

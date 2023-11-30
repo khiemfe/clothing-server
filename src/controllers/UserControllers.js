@@ -88,6 +88,8 @@ const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const data = req.body;
+    console.log("userId:", userId);
+    console.log("data:", data);
 
     if (!userId) {
       return res.status(200).json({
@@ -95,14 +97,12 @@ const updateUser = async (req, res) => {
         message: "The userId is required",
       });
     }
-
-    if (!data?.phone.match(/^[0-9]{10}$/)) {
+    if (data?.phone && !data?.phone?.match(/^[0-9]{10}$/)) {
       return res.status(200).json({
         status: "ERR",
         message: "Wrong phone number format",
       });
     }
-
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = reg.test(data?.email);
     if (!isCheckEmail) {
@@ -111,15 +111,12 @@ const updateUser = async (req, res) => {
         message: "Wrong email format",
       });
     }
-
-    console.log("userId:", userId);
-    console.log("data:", data);
     const response = await UserServices.updateUser(userId, data);
 
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
-      message: e,
+      message: "loi update day",
     });
   }
 };
@@ -128,7 +125,7 @@ const updatePassword = async (req, res) => {
   try {
     const data = req.body;
 
-    console.log('datata', data)
+    console.log("datata", data);
     if (
       !data?.email ||
       !data?.password ||
@@ -238,7 +235,8 @@ const getDetailsUser = async (req, res) => {
 const refreshToken = async (req, res) => {
   console.log("req.cookies.refresh_token", req.cookies.refresh_token);
   try {
-    const token = req.cookies.refresh_token;
+    // const token = req.cookies.refresh_token;
+    const token = req.headers.token.split(' ')[1];
     console.log("token", token);
     if (!token) {
       return res.status(404).json({
