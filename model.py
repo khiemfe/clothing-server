@@ -1,7 +1,8 @@
 # import cv2
 # import sys
 import sys
-sys.path.insert(0, '/path/to/torch/lib/python3.8/site-packages')
+
+# sys.path.insert(0, '/path/to/torch/lib/python3.8/site-packages')
 import torch
 import cv2
 

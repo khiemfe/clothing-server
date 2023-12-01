@@ -6,7 +6,7 @@ let { PythonShell } = require("python-shell");
 router.post("/proposed", (req, res) => {
   try {
     const text = req.body.imageBase64;
-    base64ToImage(text.toString(), "my_images");
+    base64ToImage(text.toString(), "my_images/");
     return res.status(200).json({
       status: "OK",
       message: "Chay ok vao day",
