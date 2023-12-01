@@ -5,7 +5,7 @@ const routes = require('./routes')
 const cookieParser = require('cookie-parser')
 const cors = require('cors') // bảo mật và tránh lỗi khi dùng các gmail giống nhau
 
-require('dotenv').config() // có cái này mới lấy được thằng bên env
+require('dotenv').config() // có cái này mới lấy được thằng env
 
 const app = express()
 const port = process.env.PORT || 3001
