@@ -125,6 +125,18 @@ const getAllType = async (req, res) => {
   }
 };
 
+const getBestProduct = async (req, res) => {
+  try {
+    const { limit } = req.query;
+    const response = await ProductServices.getBestProduct(limit);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
 module.exports = {
   createProduct,
   updateProduct,
@@ -133,4 +145,5 @@ module.exports = {
   getAllProduct,
   deleteManyProduct,
   getAllType,
+  getBestProduct
 };

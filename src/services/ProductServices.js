@@ -436,6 +436,32 @@ const getAllType = () => {
   });
 };
 
+const getBestProduct = (limit) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const totalProductAll = await Product.count({
+        selled: { $gte: 1 },
+      });
+
+      const allBest = await Product.find({
+        selled: { $gte: 1 },
+      })
+        .sort({ selled: -1 })
+        .limit(limit);
+      resolve({
+        status: "OK",
+        message: "GET BEST PRODUCT SUCCESS",
+        data: allBest,
+        totalProduct: totalProductAll,
+        // pageCurrent: page + 1,
+        totalPage: Math.ceil(totalProductAll / limit),
+      });
+    } catch (e) {
+      console.log("loi BEST PRODUCT", e);
+    }
+  });
+};
+
 module.exports = {
   createProduct,
   updateProduct,
@@ -444,4 +470,5 @@ module.exports = {
   getAllProduct,
   deleteManyProduct,
   getAllType,
+  getBestProduct,
 };

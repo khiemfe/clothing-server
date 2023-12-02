@@ -14,5 +14,6 @@ router.post(
   ProductControllers.deleteManyProduct
 );
 router.get("/get-all-type", ProductControllers.getAllType);
+router.get("/get-best-product", ProductControllers.getBestProduct);
 
 module.exports = router;
