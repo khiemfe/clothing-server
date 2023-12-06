@@ -4,7 +4,7 @@ const Product = require("../models/ProductModel");
 
 const createProduct = (newProduct) => {
   return new Promise(async (resolve, reject) => {
-    const { name, image, gender, price, age, size, type, quantity } =
+    const { name, image, imageDetails, gender, price, age, size, type, quantity } =
       newProduct;
     try {
       const checkProduct = await Product.findOne({
@@ -19,6 +19,7 @@ const createProduct = (newProduct) => {
         const createProduct = await Product.create({
           name,
           image,
+          imageDetails,
           gender,
           price,
           age,
@@ -406,7 +407,8 @@ const getAllProduct = (limit, page, sort, filter) => {
 
       const allProduct = await Product.find()
         .limit(limit)
-        .skip(page * limit);
+        .skip(page * limit)
+        .sort({ _id: -1 });
       resolve({
         status: "OK",
         message: "SUCCESS",

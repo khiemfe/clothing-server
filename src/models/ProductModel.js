@@ -10,8 +10,13 @@ const productSchema = new Schema(
     //   author: ObjectId,
     name: { type: String, required: true },
     image: { type: String, required: true },
+    imageDetails: {
+      image1: { type: String },
+      image2: { type: String },
+      image3: { type: String },
+    },
     gender: { type: String, required: true },
-    type: { type: String, required: true  },
+    type: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: {
       sizeS: { type: Number },

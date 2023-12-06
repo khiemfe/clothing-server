@@ -3,9 +3,21 @@ const JwtService = require("../services/JwtService");
 
 const createProduct = async (req, res) => {
   try {
-    const { name, image, gender, price, age, size, type } = req.body;
+    const { name, image, gender, price, age, size, type, imageDetails } =
+      req.body;
     console.log("ppppppppppppppppp", req.body);
-    if (!name || !image || !gender || !price || !age || !size || !type) {
+    if (
+      !name ||
+      !image ||
+      !gender ||
+      !price ||
+      !age ||
+      !size ||
+      !type ||
+      !imageDetails?.image1 ||
+      !imageDetails?.image2 ||
+      !imageDetails?.image3
+    ) {
       return res.status(404).json({
         status: "ERR",
         message: "The input is requireddd",
@@ -145,5 +157,5 @@ module.exports = {
   getAllProduct,
   deleteManyProduct,
   getAllType,
-  getBestProduct
+  getBestProduct,
 };
