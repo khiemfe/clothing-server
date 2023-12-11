@@ -17,6 +17,7 @@ const createOrder = (userId, newOrder) => {
       isPaid,
       paidAt,
       email,
+      deliveredAt,
       // user,
     } = newOrder;
     try {
@@ -29,7 +30,7 @@ const createOrder = (userId, newOrder) => {
           },
           { new: true } //trả về dữ liệu mới sau khi cập nhật
         );
-        console.log('productData', productData)
+        console.log("productData", productData);
         if (productData) {
           // if (createOrder) {
           return {
@@ -75,6 +76,7 @@ const createOrder = (userId, newOrder) => {
           user: userId,
           isPaid,
           paidAt,
+          deliveredAt,
         });
         if (createOrder) {
           orderItems?.map(async (order) => {
@@ -137,7 +139,7 @@ const getAllOrderDetails = (id) => {
 };
 
 const getOrderDetails = (id) => {
-  console.log('get id', id)
+  console.log("get id", id);
   return new Promise(async (resolve, reject) => {
     try {
       const order = await Order.findById({

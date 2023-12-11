@@ -36,7 +36,7 @@ const orderSchema = new Schema(
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     DeliveryStatus: { type: String, default: "NOT" },
-    deliveredAt: { type: Date },
+    deliveredAt: { type: String },
   },
   {
     timestamps: true,

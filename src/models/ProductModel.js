@@ -41,7 +41,6 @@ const productSchema = new Schema(
     selled: { type: Number, default: 0 },
     age: { type: String, required: true },
     size: { type: String, required: true },
-    // slug: { type: String, slug: 'name', unique: true },
   },
   {
     timestamps: true,

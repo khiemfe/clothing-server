@@ -98,7 +98,7 @@ const updateUser = async (req, res) => {
       });
     }
     if (data?.phone && !data?.phone?.match(/^[0-9]{10}$/)) {
-      return res.status(200).json({
+      return res.status(404).json({
         status: "ERR",
         message: "Wrong phone number format",
       });
@@ -233,7 +233,6 @@ const getDetailsUser = async (req, res) => {
 };
 
 const refreshToken = async (req, res) => {
-  console.log("req.cookies.refresh_token", req.cookies.refresh_token);
   try {
     // const token = req.cookies.refresh_token;
     const token = req.headers.token.split(' ')[1];
