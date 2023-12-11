@@ -17,7 +17,7 @@ const createUser = (newUser) => {
       if (checkUser !== null) {
         resolve({
           status: "ERR",
-          message: "The email is already",
+          message: "Email này đã tồn tại",
         });
       } else {
         const checkOTP = await OTP.findOne({
@@ -64,7 +64,7 @@ const loginUser = (userLogin) => {
       if (checkUser === null) {
         resolve({
           status: "ERR",
-          message: "Email này đã tồn tại",
+          message: "Email này chưa được đăng ký",
         });
       }
       //  console.log(typeof password.toString())
