@@ -1,15 +1,11 @@
 const User = require("../models/UserModel");
 const OTP = require("../models/OTPModel");
 const bcrypt = require("bcrypt");
-const {
-  // genneralAccessTokenAdmin,
-  genneralAccessToken,
-  genneralRefreshToken,
-} = require("./JwtService");
+const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
 
 const createUser = (newUser) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, password, confirmPassword, phone, otp } = newUser;
+    const { email, password, otp } = newUser;
     try {
       const checkUser = await User.findOne({
         email: email,
@@ -23,16 +19,12 @@ const createUser = (newUser) => {
         const checkOTP = await OTP.findOne({
           otp: otp,
         });
-        console.log("checkOTP", checkOTP);
         const hash = bcrypt.hashSync(password.toString(), 10);
 
         if (checkOTP) {
           const createUser = await User.create({
-            // name,
             email,
             password: hash,
-            // confirmPassword,
-            // phone,
           });
           if (createUser) {
             resolve({
@@ -67,30 +59,22 @@ const loginUser = (userLogin) => {
           message: "Email này chưa được đăng ký",
         });
       }
-      //  console.log(typeof password.toString())
-      //  console.log(typeof checkUser.password)
-      // console.log(password.toString() === checkUser.password)
+
       const comparePassword = bcrypt.compareSync(password, checkUser.password);
-      console.log("pass", comparePassword);
       if (!comparePassword) {
         resolve({
           status: "ERR",
           message: "The password or user in incorrect",
         });
       }
-      console.log("checkUser.isAdmin", checkUser.isAdmin);
       const access_token = await genneralAccessToken({
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
       });
-      console.log("++++++++", access_token);
-      console.log(checkUser.id);
-      console.log(checkUser.isAdmin);
       const refresh_token = await genneralRefreshToken({
         id: checkUser.id,
         isAdmin: checkUser.isAdmin,
       });
-      console.log("=========", refresh_token);
       resolve({
         status: "OK",
         message: "SUCCESS",
@@ -104,14 +88,11 @@ const loginUser = (userLogin) => {
 };
 
 const updateUser = (id, data) => {
-  console.log("iddddd", id);
-  console.log("dattaa", data);
   return new Promise(async (resolve, reject) => {
     try {
       const checkUser = await User.findOne({
         _id: id,
       });
-       console.log('checkUser', checkUser)
       if (checkUser === null) {
         resolve({
           status: "ERR",
@@ -119,7 +100,6 @@ const updateUser = (id, data) => {
         });
       }
       const updateUser = await User.findByIdAndUpdate(id, data, { new: true });
-      // console.log('updateUser', updateUser)
 
       resolve({
         status: "OK",
@@ -184,7 +164,6 @@ const deleteUser = (id) => {
       const checkUser = await User.findOne({
         _id: id,
       });
-      //  console.log('checkUser', checkUser)
       if (checkUser === null) {
         resolve({
           status: "ERR",
@@ -235,7 +214,6 @@ const getAllUser = () => {
 };
 
 const getDetailsUser = (id) => {
-  console.log("id id", id);
   return new Promise(async (resolve, reject) => {
     try {
       const user = await User.findOne({

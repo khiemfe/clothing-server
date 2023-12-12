@@ -5,7 +5,6 @@ const EmailServices = require("./EmailServices");
 const createOTP = (newUser) => {
   return new Promise(async (resolve, reject) => {
     const { email } = newUser;
-    console.log("email", email);
     try {
       const checkUserExist = await User.findOne({
         email: email,
@@ -19,7 +18,6 @@ const createOTP = (newUser) => {
       const checkUser = await OTP.findOne({
         email: email,
       });
-      console.log("checkUser", checkUser);
       const numbers = await EmailServices.sendEmailCreateUser(email);
       if (checkUser !== null) {
         const update = {

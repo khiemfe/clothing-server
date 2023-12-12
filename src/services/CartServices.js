@@ -3,7 +3,6 @@ const Cart = require("../models/CartModel");
 const createCart = (userId, data) => {
   return new Promise(async (resolve, reject) => {
     const { name, amount, size, image, price, productId, type } = data;
-    console.log("data", data);
     try {
       const checkCart = await Cart.findOne({
         userId: userId,
@@ -107,13 +106,11 @@ const getAllCart = (id) => {
 };
 
 const deleteCartDetails = (id) => {
-  console.log("iddelete", id);
   return new Promise(async (resolve, reject) => {
     try {
       const checkCart = await Cart.findOne({
         _id: id,
       });
-      console.log("checkCart", checkCart);
       if (checkCart === null) {
         resolve({
           status: "ERR",
@@ -132,7 +129,6 @@ const deleteCartDetails = (id) => {
 };
 
 const deleteUpdateCart = (ids) => {
-  console.log("iddds", ids);
   return new Promise(async (resolve, reject) => {
     try {
       ids.map(async (id) => {
@@ -158,7 +154,6 @@ const deleteUpdateCart = (ids) => {
 };
 
 const deleteManyCart = (ids) => {
-  console.log("ids", ids);
   return new Promise(async (resolve, reject) => {
     try {
       await Cart.deleteMany({ _id: ids });

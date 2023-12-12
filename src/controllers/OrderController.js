@@ -13,17 +13,6 @@ const createOrder = async (req, res) => {
       address,
       phone,
     } = req.body;
-    console.log("ppppppppppppppppp", req.body);
-    console.log(
-      "kq:",
-      paymentMethod,
-      itemsPrice,
-      shippingPrice,
-      totalPrice,
-      fullName,
-      address,
-      phone
-    );
     if (
       !paymentMethod ||
       !itemsPrice ||
@@ -39,7 +28,6 @@ const createOrder = async (req, res) => {
       });
     }
     const response = await OrderServices.createOrder(userId, req.body);
-    console.log("ggggggggggggggg", response);
     if (response?.status === "OK") {
       return res.status(200).json(response);
     } else {
@@ -55,7 +43,6 @@ const createOrder = async (req, res) => {
 const getAllOrderDetails = async (req, res) => {
   try {
     const userId = req.params.id;
-    console.log("userId", userId);
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
@@ -74,7 +61,6 @@ const getAllOrderDetails = async (req, res) => {
 const getDetailsOrder = async (req, res) => {
   try {
     const orderId = req.params.orderId;
-    console.log("orderId", orderId);
 
     if (!orderId) {
       return res.status(200).json({
@@ -85,7 +71,6 @@ const getDetailsOrder = async (req, res) => {
     const response = await OrderServices.getOrderDetails(orderId);
     return res.status(200).json(response);
   } catch (e) {
-    // console.log(e)
     return res.status(404).json({
       message: e,
     });
@@ -95,9 +80,7 @@ const getDetailsOrder = async (req, res) => {
 const cancelOrderDetails = async (req, res) => {
   try {
     const data = req.body.orderItems;
-    console.log("dataOrder", data);
     const orderId = req.body.orderId;
-    console.log("orderId", orderId);
     if (!orderId) {
       return res.status(200).json({
         status: "ERR",
@@ -107,7 +90,6 @@ const cancelOrderDetails = async (req, res) => {
     const response = await OrderServices.cancelOrderDetails(orderId, data);
     return res.status(200).json(response);
   } catch (e) {
-    // console.log(e)
     return res.status(404).json({
       status: "ERR",
       message: "The err",
@@ -120,7 +102,6 @@ const getAllOrder = async (req, res) => {
     const data = await OrderServices.getAllOrder();
     return res.status(200).json(data);
   } catch (e) {
-    // console.log(e)
     return res.status(404).json({
       message: e,
     });

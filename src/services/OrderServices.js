@@ -18,7 +18,6 @@ const createOrder = (userId, newOrder) => {
       paidAt,
       email,
       deliveredAt,
-      // user,
     } = newOrder;
     try {
       const promises = orderItems?.map(async (order) => {
@@ -30,7 +29,6 @@ const createOrder = (userId, newOrder) => {
           },
           { new: true } //trả về dữ liệu mới sau khi cập nhật
         );
-        console.log("productData", productData);
         if (productData) {
           // if (createOrder) {
           return {
@@ -48,9 +46,7 @@ const createOrder = (userId, newOrder) => {
         }
       });
       const results = await Promise.all(promises);
-      console.log("results", results);
       const newData = results.filter((item) => item.id);
-      console.log("newData", newData);
       if (newData.length) {
         const arrId = [];
         newData.forEach((item) => {
@@ -132,14 +128,12 @@ const getAllOrderDetails = (id) => {
         data: order,
       });
     } catch (e) {
-      // console.log('e', e)
       reject(e);
     }
   });
 };
 
 const getOrderDetails = (id) => {
-  console.log("get id", id);
   return new Promise(async (resolve, reject) => {
     try {
       const order = await Order.findById({
@@ -165,15 +159,11 @@ const getOrderDetails = (id) => {
 
 const cancelOrderDetails = (id, data) => {
   let check = 1;
-  console.log("orderIdid", id);
-  console.log("datadata", data);
   return new Promise(async (resolve, reject) => {
     try {
       let order = [];
       const promises = data.map(async (order) => {
-        console.log("orderorder", order?.productId);
         const quantityProperty = `quantity.size${order?.size}`;
-        console.log("quantityProperty", quantityProperty);
         const productData = await Product.findOneAndUpdate(
           {
             _id: order?.productId,
@@ -185,15 +175,12 @@ const cancelOrderDetails = (id, data) => {
               selled: -order.amount,
             },
           },
-          // { multi: true },
           { new: true }
         );
-        console.log("productData", productData);
         if (check === 1) {
           if (productData) {
             check = 2;
             order = await Order.findByIdAndDelete(id);
-            console.log("orderrr", order);
             if (order === null) {
               resolve({
                 status: "ERR",

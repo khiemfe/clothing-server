@@ -9,11 +9,6 @@ const {
 router.post("/create/:id", authUserMiddleware, CartController.createCart);
 router.put("/update/:id", authMiddleware, CartController.updateCart);
 router.get("/get-all-cart/:id", authUserMiddleware, CartController.getAllCart);
-// router.get(
-//   "/get-details-cart/:id",
-//   authUserMiddleware,
-//   CartController.getDetailsOrder
-// );
 router.delete(
   "/delete-cart-details/:id/:cartId",
   authUserMiddleware,

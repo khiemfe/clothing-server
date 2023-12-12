@@ -68,7 +68,6 @@ const sendEmailCreateUser = async (email) => {
     numbers.push(Math.floor(Math.random() * 10));
   }
   numbers.join("");
-  console.log("number", numbers.join(""));
 
   const message = {
     from: process.env.MAIL_ACCOUNT, // sender address

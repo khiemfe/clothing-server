@@ -3,7 +3,7 @@ const JwtService = require("../services/JwtService");
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword, otp, phone } = req.body;
+    const { email, password, confirmPassword, otp } = req.body;
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = reg.test(email);
     if (!email || !password || !confirmPassword || !otp) {
@@ -53,7 +53,6 @@ const loginUser = async (req, res) => {
       });
     }
     const response = await UserServices.loginUser(req.body);
-    console.log("rrrresponse", response);
     const { refresh_token, ...newRespone } = response;
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true, //chỉ lấy được cookie bằng http thôi, ko lấy được bằng js
@@ -88,8 +87,6 @@ const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const data = req.body;
-    console.log("userId:", userId);
-    console.log("data:", data);
 
     if (!userId) {
       return res.status(200).json({
@@ -103,14 +100,6 @@ const updateUser = async (req, res) => {
         message: "Wrong phone number format",
       });
     }
-    // const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    // const isCheckEmail = reg.test(data?.email);
-    // if (!isCheckEmail) {
-    //   return res.status(200).json({
-    //     status: "ERR",
-    //     message: "Wrong email format",
-    //   });
-    // }
     const response = await UserServices.updateUser(userId, data);
 
     return res.status(200).json(response);
@@ -125,7 +114,6 @@ const updatePassword = async (req, res) => {
   try {
     const data = req.body;
 
-    console.log("datata", data);
     if (
       !data?.email ||
       !data?.password ||
@@ -164,9 +152,6 @@ const updatePassword = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    // console.log('userId:', userId)
-    // const token = req.headers
-    // console.log('token:', token)
 
     if (!userId) {
       return res.status(200).json({
@@ -222,7 +207,6 @@ const getDetailsUser = async (req, res) => {
         message: "The userId is required",
       });
     }
-    console.log("userIddd", userId);
     const response = await UserServices.getDetailsUser(userId);
     return res.status(200).json(response);
   } catch (e) {
@@ -235,8 +219,8 @@ const getDetailsUser = async (req, res) => {
 const refreshToken = async (req, res) => {
   try {
     // const token = req.cookies.refresh_token;
-    const token = req.headers.token.split(' ')[1];
-    console.log("token", token);
+    const token = req.headers.token.split(" ")[1];
+    // console.log("token", token);
     if (!token) {
       return res.status(404).json({
         status: "ERR",

@@ -41,7 +41,6 @@ const updateCart = async (req, res) => {
 const getAllCart = async (req, res) => {
   try {
     const userId = req.params.id;
-    console.log("userId", userId);
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
@@ -60,7 +59,6 @@ const getAllCart = async (req, res) => {
 const deleteCartDetails = async (req, res) => {
   try {
     const cartId = req.params.cartId;
-    console.log("cartId", cartId);
     if (!cartId) {
       return es.status(404).json({
         status: "ERR",
@@ -79,7 +77,6 @@ const deleteCartDetails = async (req, res) => {
 const deleteUpdateCart = async (req, res) => {
   try {
     const ids = req.body.ids;
-    console.log("idsss, ids");
     if (!ids) {
       return res.status(200).json({
         status: "ERR",
@@ -98,7 +95,6 @@ const deleteUpdateCart = async (req, res) => {
 const deleteManyCart = async (req, res) => {
   try {
     const ids = req.body.ids;
-    console.log("ids2", ids);
     if (!ids) {
       return res.status(200).json({
         status: "ERR",

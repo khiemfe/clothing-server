@@ -30,7 +30,6 @@ const genneralRefreshToken = async (payload) => {
 const refreshTokenJwtService = (token) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("///////////", token);
       jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
         if (err) {
           resolve({
@@ -38,14 +37,12 @@ const refreshTokenJwtService = (token) => {
             message: "The authemticationnn",
           });
         }
-        console.log("??????????", user);
         let access_token;
         access_token = await genneralAccessToken({
           id: user?.id,
           isAdmin: user?.isAdmin,
         });
         // }
-        console.log("access_token ---------------", access_token);
         resolve({
           status: "OK",
           message: "SUCCESS",
