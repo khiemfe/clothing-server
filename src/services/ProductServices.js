@@ -364,6 +364,7 @@ const getAllProduct = (limit, page, sort, filter) => {
         .limit(limit)
         .skip(page * limit)
         .sort({ _id: -1 });
+      console.log("Someone is using it");
       resolve({
         status: "OK",
         message: "SUCCESS",
