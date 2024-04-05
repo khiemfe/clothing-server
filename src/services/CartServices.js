@@ -99,7 +99,6 @@ const getAllCart = (id) => {
         data: cart,
       });
     } catch (e) {
-      // console.log('e', e)
       reject(e);
     }
   });

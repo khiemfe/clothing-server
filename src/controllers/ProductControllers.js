@@ -105,15 +105,50 @@ const deleteManyProduct = async (req, res) => {
   }
 };
 
-const getAllProduct = async (req, res) => {
+const getAllProductSearch = async (req, res) => {
   try {
-    const { limit, page, sort, filter } = req.query;
-    const response = await ProductServices.getAllProduct(
+    const { limit, filter } = req.query;
+    const response = await ProductServices.getAllProductSearch(+limit, filter);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
+const getAllProductType = async (req, res) => {
+  try {
+    const { limit, page, filter } = req.query;
+    const response = await ProductServices.getAllProductType(
       +limit,
       +page,
-      sort,
       filter
     );
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
+const getAllProductPropose = async (req, res) => {
+  try {
+    const { limit, filter } = req.query;
+    const response = await ProductServices.getAllProductPropose(+limit, filter);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
+const getAllProduct = async (req, res) => {
+  try {
+    const { limit } = req.query;
+    const response = await ProductServices.getAllProduct(+limit);
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -150,6 +185,9 @@ module.exports = {
   updateProduct,
   getdetailsProduct,
   deleteProduct,
+  getAllProductSearch,
+  getAllProductType,
+  getAllProductPropose,
   getAllProduct,
   deleteManyProduct,
   getAllType,
