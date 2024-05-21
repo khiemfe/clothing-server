@@ -8,7 +8,7 @@ const createOTP = async (req, res) => {
     if (!email) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is required",
+        message: "Email không được trống",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
@@ -33,7 +33,7 @@ const createOTPPassword = async (req, res) => {
     if (!email) {
       return res.status(200).json({
         status: "ERR",
-        message: "The input is required",
+        message: "Email không được trống",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({

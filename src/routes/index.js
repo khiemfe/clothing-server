@@ -5,6 +5,7 @@ const CartRouter = require("./CartRouter");
 const PaymentRouter = require("./PaymentRouter");
 const OTPRouter = require("./OTPRouter");
 const ProposedRouter = require("./ProposedRouter");
+const routerImage = require("./UploadImage");
 // const sharp = require("sharp");
 // const fs = require("fs");
 
@@ -16,6 +17,7 @@ const routes = (app) => {
   app.use("/api/payment", PaymentRouter);
   app.use("/api/otp", OTPRouter);
   app.use("/api/save", ProposedRouter);
+  app.use("/api/images", routerImage);
 
   // app.post("https://clothing-server-btam.onrender.com/save", (req, res) => {
   //   // Nhận dữ liệu từ ReactJS
@@ -48,8 +50,6 @@ const routes = (app) => {
   //   //       console.log("Error occured ", err);
   //   //     });
   // })
-
-  
 };
 
 module.exports = routes;

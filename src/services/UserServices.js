@@ -64,7 +64,7 @@ const loginUser = (userLogin) => {
       if (!comparePassword) {
         resolve({
           status: "ERR",
-          message: "The password or user in incorrect",
+          message: "Mật khẩu không chính xác",
         });
       }
       const access_token = await genneralAccessToken({

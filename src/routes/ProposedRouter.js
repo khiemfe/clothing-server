@@ -5,7 +5,8 @@ let { PythonShell } = require("python-shell");
 
 router.post("/proposed", (req, res) => {
   try {
-    const text = req.body.imageBase64;
+    console.log(req.body);
+    const text = req.body.bgRemove;
     base64ToImage(text.toString(), "my_images/");
     return res.status(200).json({
       status: "OK",
@@ -19,22 +20,18 @@ router.post("/proposed", (req, res) => {
 });
 
 router.get("/results", async (req, res) => {
-  const imagee = "my_images/img.jpeg";
+  const imagee = "my_images/img.png";
   const options = {
     pythonPath: "python3",
     args: [imagee],
   };
-  PythonShell.run(
-    "/Users/ngockhiem/Documents/Đồ án CDIO 4/Project/model/model.py",
-    options,
-    function (err, results) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("results", results);
-        res.json(results);
-      }
+  PythonShell.run("model.py", options, function (err, results) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("results", results);
+      res.json(results);
     }
-  );
+  });
 });
 module.exports = router;

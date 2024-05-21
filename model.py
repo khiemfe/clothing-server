@@ -6,9 +6,9 @@ import sys
 import torch
 import cv2
 
-modelBMI = torch.hub.load("ultralytics/yolov5", "custom", path="Model_BMINew.pt")
-modelAge = torch.hub.load("ultralytics/yolov5", "custom", path="Model_AgeNew.pt")
-modelGender = torch.hub.load("ultralytics/yolov5", "custom", path="Model_GenderNew.pt")
+modelGender = torch.hub.load("ultralytics/yolov5", "custom", path="Model_Gender_New.pt")
+modelAge = torch.hub.load("ultralytics/yolov5", "custom", path="Model_Age_New.pt")
+modelBMI = torch.hub.load("ultralytics/yolov5", "custom", path="Model_BMI_New.pt")
 
 
 def yoloGender(img_path):
