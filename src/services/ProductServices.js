@@ -25,7 +25,6 @@ const createProduct = (newProduct) => {
           message: "The name of product is already",
         });
       } else {
-
         const createProduct = await Product.create({
           name,
           image,
@@ -195,8 +194,7 @@ const getAllProductSearch = (limit, filter) => {
 
       allProductFilterMain = await Product.find({
         [label]: { $in: arrAllProductFilter },
-      })
-        .limit(limit)
+      }).limit(limit);
 
       resolve({
         status: "OK",
@@ -262,15 +260,20 @@ const getAllProductPropose = (limit, filter) => {
       const arrGender = [];
       const arrSize = [];
 
-      console.log('filter[1]', filter[1])
+      console.log("filter[1]", filter[1]);
 
-      if (filter[1] === "nu") {
+      if (filter[1] === "nu" || filter[1] === "Nu") {
         label4 = "Nữ";
       }
-      if (filter[1] !== "nu" && filter[1] !== "nam") {
+      if (
+        filter[1] !== "nu" &&
+        filter[1] !== "nam" &&
+        filter[1] !== "Nu" &&
+        filter[1] !== "Nam"
+      ) {
         label4 = "";
       }
-      console.log('label4', label4)
+      console.log("label4", label4);
 
       if (filter[5] === "Beo") {
         label6 = "Mập";
@@ -319,14 +322,12 @@ const getAllProductPropose = (limit, filter) => {
           [label1]: { $in: arrGender },
           [label2]: { $in: arrAge },
           [label3]: { $in: arrSize },
-        })
-          .limit(limit)
+        }).limit(limit);
       } else {
         allProductFilterPropose = await Product.find({
           [label1]: { $regex: label4, $options: "i" },
           [label3]: { $regex: label6, $options: "i" },
-        })
-          .limit(limit)
+        }).limit(limit);
 
         totalProductPropose = await Product.count({
           [label1]: { $regex: label4, $options: "i" },
@@ -371,9 +372,7 @@ const getAllProduct = (limit) => {
 
       console.log("Get All");
       const totalProductAll = await Product.count();
-      const allProduct = await Product.find()
-        .limit(limit)
-        .sort({ _id: -1 });
+      const allProduct = await Product.find().limit(limit).sort({ _id: -1 });
       resolve({
         status: "OK",
         message: "SUCCESS",
